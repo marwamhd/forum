@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/normalize.css">
+    <link rel="stylesheet" href="static/CSS/main.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="#" onclick="changeContent('home')">
+                <div class="navButton">Forum</div>
+            </a>
+            {{if eq . 0}}
+            <a href="#" onclick="changeContent('login')">
+                <div class="navButton">Login</div>
+            </a>
+            {{else}}
+            <a href="#" onclick="changeContent('profile')">
+                <div class="navButton">Profile</div>
+            </a>
+            <a href="/logout">
+                <div class="navButton">Logout</div>
+            </a>
+            {{end}}
+        </header>        
+        <main class="contentpost" id="content">
+            <div class="posts">  
+                <div class="post">
+                    <div class="title">
+                        <h2>marwa</h2>
+                    </div>
+                    <div class="content">
+                        dnjencjdnjcndnckegfnbvgjnbjgb
+                    </div>
+                </div><div class="post">
+                    <div class="title">
+                        <h2>marwa</h2>
+                    </div>
+                    <div class="content">
+                        dnjencjdnjcndnckegfnbvgjnbjgb
+                    </div>
+                </div>
+                <div class="post">
+                    <div class="title">
+                        <h2>marwa</h2>
+                    </div>
+                    <div class="content">
+                        dnjencjdnjcndnckegfnbvgjnbjgb
+                    </div>
+                </div><div class="post">
+                    <div class="title">
+                        <h2>marwa</h2>
+                    </div>
+                    <div class="content">
+                        dnjencjdnjcndnckegfnbvgjnbjgb
+                    </div>
+                </div><div class="post">
+                    <div class="title">
+                        <h2>marwa</h2>
+                    </div>
+                    <div class="content">
+                        dnjencjdnjcndnckegfnbvgjnbjgb
+                    </div>
+                </div><div class="post">
+                    <div class="title">
+                        <h2>marwa</h2>
+                    </div>
+                    <div class="content">
+                        dnjencjdnjcndnckegfnbvgjnbjgb
+                    </div>
+                </div><div class="post">
+                    <div class="title">
+                        <h2>marwa</h2>
+                    </div>
+                    <div class="content">
+                        dnjencjdnjcndnckegfnbvgjnbjgb
+                    </div>
+                </div><div class="post">
+                    <div class="title">
+                        <h2>marwa</h2>
+                    </div>
+                    <div class="content">
+                        dnjencjdnjcndnckegfnbvgjnbjgb
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        <footer>footer</footer>
+    </div>
+    <script src="static/JS/contentSwitch.js"></script>
+</body>
+</html>
