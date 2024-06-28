@@ -1,12 +1,13 @@
 body{
-    background-color: rgb(245, 157, 157);
+    background-color: rgb(233, 24, 233);
+    color: white;
 }
 
 .container{
     width: 90%;
     margin: 0 auto;
     min-height: 100vh;
-    background-color: blue;
+    background-color: pnik;
 }
 
 .contentpost {
@@ -30,11 +31,13 @@ header{
 
 main{
     min-height: 80vh;
+    background-color: purple;
 }
 
-.contentAuth{
+
+.formAuth {
+    min-height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    
 }
