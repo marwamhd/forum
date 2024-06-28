@@ -1,0 +1,40 @@
+body{
+    background-color: rgb(245, 157, 157);
+}
+
+.container{
+    width: 90%;
+    margin: 0 auto;
+    min-height: 100vh;
+    background-color: blue;
+}
+
+.contentpost {
+    display: flex;
+    justify-content: center;
+}
+
+.post {
+    margin-bottom: 40px;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.navButton{
+    background-color: white;
+    padding: 20px 40px;
+}
+
+main{
+    min-height: 80vh;
+}
+
+.contentAuth{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
