@@ -22,27 +22,25 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Printf("r.Cookies(): %v\n", r.Cookies())
-
 	cook, cookieFound := r.Cookie("session_id")
 	authlevel := 1
 
 	if cookieFound != nil {
-		log.Println(cookieFound)
+		log.Println(cookieFound, "31")
 		OverWriteCookieValue(w, r, uuid.Nil)
 		authlevel = 0
 	} else if cook.Value == "" {
 		authlevel = 0
+	} else {
+		activeSession, errForSes := use.DataBase.SessionExists(cook.Value)
+
+		if !activeSession || errForSes != nil {
+			authlevel = 0
+			OverWriteCookieValue(w, r, uuid.Nil)
+		}
 	}
 
 	//is this cookie actually in the db? if yes, we enter as logged in, if not, we enter as not logged in and delete the cookie
-
-	activeSession, errForSes := use.DataBase.SessionExists(cook.Value)
-
-	if !activeSession || errForSes != nil {
-		authlevel = 0
-		OverWriteCookieValue(w, r, uuid.Nil)
-	}
 
 	posts, errForPost := use.DataBase.GetPosts()
 	if errForPost != nil {
@@ -54,7 +52,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 
 	err := MainHtml.Execute(w, content{authlevel, posts})
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 		return
 	}
 
