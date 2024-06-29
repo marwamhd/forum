@@ -265,3 +265,32 @@ func getUsername(id int) (string, error) {
 
 	return username, nil
 }
+
+func GetAuthor(session string) (int, error) {
+	statement, err := DataBase.DB.Prepare("SELECT id FROM users WHERE session_id = ?")
+	if err != nil {
+		return 0, err
+	}
+	defer statement.Close()
+
+	var id int
+	err = statement.QueryRow(session).Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
+}
+
+func (DataBase *DB) InsertPost(u_ID int, title, post string) error {
+	statement, err := DataBase.DB.Prepare("INSERT INTO posts (u_ID, title, post) VALUES (?, ?, ?)")
+	if err != nil {
+		return err
+	}
+
+	_, err = statement.Exec(u_ID, title, post)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -40,6 +40,25 @@ function changeContent(page) {
                 </div>
             </form>`;
             break;
+        case 'addpost':
+            contentDiv.innerHTML = `
+            <form class="formAuth" action="/addpost" method="post">
+                <div>
+                    category
+                    <input type="checkbox" name="category" value="1">Category 1
+                    <input type="checkbox" name="category" value="2">Category 2
+                    <input type="checkbox" name="category" value="3">Category 3
+                    <input type="checkbox" name="category" value="4">Category 4
+                    <br>
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title">
+                    <br>
+                    <label for="post">Post</label>
+                    <textarea name="post" id="post"></textarea><br>
+                    <button type="submit">Add Post</button> 
+                </div>
+            </form>`;
+            break;
  
         default:
             contentDiv.innerHTML = '<h2>Page not found!</h2>';
