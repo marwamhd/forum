@@ -258,8 +258,10 @@ func (Database DB) GetPosts() ([]Post, error) {
 }
 
 func (Database DB) GetFilteredPosts(str string) ([]Post, error) {
+	fmt.Println(str)
 	rows, err := Database.DB.Query(str)
 	if err != nil {
+		fmt.Println("55")
 		return nil, err
 	}
 	defer rows.Close()

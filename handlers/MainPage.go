@@ -7,6 +7,7 @@ import (
 	use "pl/database"
 	"pl/helpers"
 	"strconv"
+	"strings"
 	"text/template"
 
 	"github.com/gofrs/uuid"
@@ -49,20 +50,23 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("error in getting posts", errForPost)
 		return
 	}
-
-	arr := []string{}
-	for i, Fvalue := range <value from form> {
-		if Fvalue == 1 {
-			arr = append(arr, "cat" + strconv.Itoa(i+1))
-		}
+	com := "select * from posts"
+	values := r.URL.Query()[("cat")]
+	fmt.Println("val", values)
+	if len(values) != 0 {
+		str := strings.Join(values, " and ")
+		com = "select * from posts where " + str
 	}
-	com := "select * from posts where " + strings.Join(arr, " and ")
 
 	filteredPosts, errForFiltered := use.DataBase.GetFilteredPosts(com)
+	if errForFiltered != nil {
+		log.Println("error in filtering posts", errForFiltered)
+		return
+	}
 
 	MainHtml, _ := template.ParseFiles("Templates/index.html")
 
-	err := MainHtml.Execute(w, content{authlevel, filteredPosts})
+	err := MainHtml.Execute(w, content{authlevel, posts, filteredPosts})
 	if err != nil {
 		log.Fatal(err)
 		return

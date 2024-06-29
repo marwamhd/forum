@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="../Style/EStyle.css">
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-op">
+            <h1>Oops!</h1>
+        </div>        
+        <p>{{.ErrorCode}} - ERROR</p>
+        <p>{{.ErrorMessage}}</p>
+        <button id="errorb" onclick="window.location.href = 'http://localhost:1221/'">Go to Main Page</button>
+    </div>
+</body>
+</html>
