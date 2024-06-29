@@ -45,6 +45,10 @@ func (DataBase *DB) CreateTable() {
 		password TEXT NOT NULL,
 		session_id TEXT NULL
 	)`)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 	_, err = DataBase.DB.Exec(`
 	CREATE TABLE IF NOT EXISTS posts (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -107,6 +111,24 @@ func (DataBase *DB) EmailExists(InputEmail string) (bool, error) {
 
 	var id int
 	err = statement.QueryRow(InputEmail).Scan(&id)
+	if err == sql.ErrNoRows {
+		return false, nil
+	} else if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (DataBase *DB) SessionExists(session string) (bool, error) {
+	statement, err := DataBase.DB.Prepare("SELECT id FROM users WHERE session_id = ?")
+	if err != nil {
+		return false, err
+	}
+	defer statement.Close()
+
+	var id int
+	err = statement.QueryRow(session).Scan(&id)
 	if err == sql.ErrNoRows {
 		return false, nil
 	} else if err != nil {

@@ -24,21 +24,21 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 
 	if cookieFound != nil {
 		log.Println(cookieFound)
-		cookie := http.Cookie{
-			Name:     "session_id",
-			Value:    "",
-			Path:     "/",
-			MaxAge:   3600,
-			HttpOnly: true,
-			Secure:   true,
-			SameSite: http.SameSiteLaxMode,
-		}
-
-		http.SetCookie(w, &cookie)
+		OverWriteCookieValue(w, r, uuid.Nil)
 		authlevel = 0
 	} else if cook.Value == "" {
 		authlevel = 0
 	}
+
+	//is this cookie actually in the db? if yes, we enter as logged in, if not, we enter as not logged in and delete the cookie
+
+	activeSession, errForSes := use.DataBase.SessionExists(cook.Value)
+
+	if !activeSession || errForSes != nil {
+		authlevel = 0
+		OverWriteCookieValue(w, r, uuid.Nil)
+	}
+
 	MainHtml, _ := template.ParseFiles("Templates/index.html")
 
 	err := MainHtml.Execute(w, authlevel)
@@ -86,19 +86,21 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 
 	use.DataBase.InsertUser(email, username, password)
 
-	authlevel, sid, err := use.DataBase.Login(email, password, r)
-	if err != nil && (err.Error() == "invalid credentials" || err.Error() == "user already has an active session") {
-		helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest)+" "+err.Error())
-		return
-	} else if err != nil {
-		helpers.HandleErrorPages(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError)+" "+err.Error())
-		return
-	}
-	if authlevel == 1 {
-		fmt.Println("authorized")
-	}
+	// authlevel, sid, err := use.DataBase.Login(email, password, r)
+	// if err != nil && (err.Error() == "invalid credentials" || err.Error() == "user already has an active session") {
+	// 	helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest)+" "+err.Error())
+	// 	return
+	// } else if err != nil {
+	// 	helpers.HandleErrorPages(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError)+" "+err.Error())
+	// 	return
+	// }
+	// if authlevel == 1 {
+	// 	fmt.Println("authorized")
+	// }
 
-	SetCookie(w, sid)
+	// OverWriteCookieValue(w, r, sid)
+
+	LoginHandler(w, r)
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 
@@ -120,7 +122,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	authlevel, sid, err := use.DataBase.Login(email, password, r)
-	if err != nil && (err.Error() == "invalid credentials" || err.Error() == "user already has an active session") {
+	if err != nil && (err.Error() == "invalid credentials" || err.Error() == "user already has an active session" || err.Error() == "sql: no rows in result set") {
 		helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest)+" "+err.Error())
 		return
 	} else if err != nil {
@@ -131,30 +133,29 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("authorized")
 	}
 
-	SetCookie(w, sid)
+	OverWriteCookieValue(w, r, sid)
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 
-}
-
-func SetCookie(w http.ResponseWriter, sid uuid.UUID) {
-	cookie := http.Cookie{
-		Name:     "session_id",
-		Value:    sid.String(),
-		Path:     "/",
-		MaxAge:   3600,
-		HttpOnly: true,
-		Secure:   true,
-		SameSite: http.SameSiteLaxMode,
-	}
-
-	http.SetCookie(w, &cookie)
 }
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+
+	OverWriteCookieValue(w, r, uuid.Nil)
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func OverWriteCookieValue(w http.ResponseWriter, r *http.Request, sid uuid.UUID) {
+	var val string
+
+	if sid != uuid.Nil {
+		val = sid.String()
+	}
+
 	cookie := http.Cookie{
 		Name:     "session_id",
-		Value:    "",
+		Value:    val,
 		Path:     "/",
 		MaxAge:   3600,
 		HttpOnly: true,
@@ -163,6 +164,13 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, &cookie)
-
-	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
+
+// func IsOnASession(r *http.Request) bool {
+// 	cook, _ := r.Cookie("session_id")
+
+// 	if cook.Value == "" {
+// 		return false
+// 	}
+
+// }
