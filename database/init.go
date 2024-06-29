@@ -257,6 +257,29 @@ func (Database DB) GetPosts() ([]Post, error) {
 	return posts, nil
 }
 
+func (Database DB) GetFilteredPosts(str string) ([]Post, error) {
+	rows, err := Database.DB.Query(str)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var posts []Post
+	for rows.Next() {
+		var post Post
+		err = rows.Scan(&post.ID, &post.U_ID, &post.Title, &post.Post, &post.Cat1, &post.Cat2, &post.Cat3)
+		if err != nil {
+			return nil, err
+		}
+		post.Username, err = getUsername(post.U_ID)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, post)
+	}
+	return posts, nil
+}
+
 func getUsername(id int) (string, error) {
 	statement, err := DataBase.DB.Prepare("SELECT username FROM users WHERE id = ?")
 	if err != nil {
