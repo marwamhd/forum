@@ -16,7 +16,7 @@ import (
 type content struct {
 	Authlevel     int
 	Posts         []use.Post
-	// filteredPosts []use.Post
+	FilteredPosts []use.Post
 }
 
 func MainHandler(w http.ResponseWriter, r *http.Request) {
@@ -50,7 +50,6 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("error in getting posts", errForPost)
 		return
 	}
-<<<<<<< HEAD
 	com := "select * from posts"
 	values := r.URL.Query()[("cat")]
 	fmt.Println("val", values)
@@ -65,25 +64,11 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Printf("filteredPosts: %v\n", filteredPosts)
+
 	MainHtml, _ := template.ParseFiles("Templates/index.html")
 
 	err := MainHtml.Execute(w, content{authlevel, posts, filteredPosts})
-=======
-
-	// arr := []string{}
-	// for i, Fvalue := range <value from form> {
-	// 	if Fvalue == 1 {
-	// 		arr = append(arr, "cat" + strconv.Itoa(i+1))
-	// 	}
-	// // }
-	// com := "select * from posts where " + strings.Join(arr, " and ")
-
-	// filteredPosts, errForFiltered := use.DataBase.GetFilteredPosts(com)
-
-	MainHtml, _ := template.ParseFiles("Templates/index.html")
-
-	err := MainHtml.Execute(w, content{authlevel, posts})
->>>>>>> refs/remotes/origin/master
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -273,6 +258,58 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	use.DataBase.InsertPost(author, title, content, cats)
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		helpers.HandleErrorPages(w, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
+		return
+	}
+
+	cook, cookieFound := r.Cookie("session_id")
+	if cookieFound != nil {
+		log.Println(cookieFound, "31")
+		OverWriteCookieValue(w, r, uuid.Nil)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	if cook.Value == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	activeSession, errForSes := use.DataBase.SessionExists(cook.Value)
+
+	if !activeSession || errForSes != nil {
+		OverWriteCookieValue(w, r, uuid.Nil)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	author, err := use.GetAuthor(cook.Value)
+	if err != nil {
+		log.Println("error in getting author", err)
+		return
+	}
+
+	postID := r.FormValue("pid")
+	content := r.FormValue("comment")
+
+	if postID == "" || content == "" {
+		helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
+		return
+	}
+
+	pid, err := strconv.Atoi(postID)
+	if err != nil {
+		helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
+		return
+	}
+
+	use.DataBase.InsertComment(author, pid, content)
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

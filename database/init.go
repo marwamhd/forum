@@ -24,6 +24,14 @@ type Post struct {
 	Cat1     int
 	Cat2     int
 	Cat3     int
+	Comments []Comment
+}
+
+type Comment struct {
+	ID      int
+	U_ID    int
+	P_ID    int
+	Comment string
 }
 
 var DataBase DB
@@ -235,21 +243,8 @@ func generateSessionID() uuid.UUID {
 	return u2
 }
 
-// func (Database DB) InsertPost(u_ID int, title, post string) error {
-// 	statement, err := Database.DB.Prepare("INSERT INTO posts (u_ID, title, post) VALUES (?, ?, ?)")
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	_, err = statement.Exec(u_ID, title, post)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
-
 func (Database DB) GetPosts() ([]Post, error) {
-	rows, err := Database.DB.Query("select * from posts")
+	rows, err := Database.DB.Query("SELECT * FROM posts")
 	if err != nil {
 		return nil, err
 	}
@@ -262,20 +257,38 @@ func (Database DB) GetPosts() ([]Post, error) {
 		if err != nil {
 			return nil, err
 		}
+
 		post.Username, err = getUsername(post.U_ID)
 		if err != nil {
 			return nil, err
 		}
+
+		crows, err := Database.DB.Query("SELECT * FROM comments WHERE p_ID = ?", post.ID)
+		if err != nil {
+			return nil, err
+		}
+		defer crows.Close()
+
+		var comments []Comment
+		for crows.Next() {
+			var comment Comment
+			err = crows.Scan(&comment.ID, &comment.U_ID, &comment.P_ID, &comment.Comment)
+			if err != nil {
+				return nil, err
+			}
+			comments = append(comments, comment)
+		}
+
+		post.Comments = comments
 		posts = append(posts, post)
 	}
+
 	return posts, nil
 }
 
 func (Database DB) GetFilteredPosts(str string) ([]Post, error) {
-	fmt.Println(str)
 	rows, err := Database.DB.Query(str)
 	if err != nil {
-		fmt.Println("55")
 		return nil, err
 	}
 	defer rows.Close()
@@ -287,12 +300,32 @@ func (Database DB) GetFilteredPosts(str string) ([]Post, error) {
 		if err != nil {
 			return nil, err
 		}
+
 		post.Username, err = getUsername(post.U_ID)
 		if err != nil {
 			return nil, err
 		}
+
+		crows, err := Database.DB.Query("SELECT * FROM comments WHERE p_ID = ?", post.ID)
+		if err != nil {
+			return nil, err
+		}
+		defer crows.Close()
+
+		var comments []Comment
+		for crows.Next() {
+			var comment Comment
+			err = crows.Scan(&comment.ID, &comment.U_ID, &comment.P_ID, &comment.Comment)
+			if err != nil {
+				return nil, err
+			}
+			comments = append(comments, comment)
+		}
+
+		post.Comments = comments
 		posts = append(posts, post)
 	}
+
 	return posts, nil
 }
 
@@ -342,12 +375,12 @@ func (DataBase *DB) InsertPost(u_ID int, title, post string, cats []int) error {
 }
 
 func (DataBase *DB) InsertComment(u_ID, p_ID int, comment string) error {
-	statement, err := DataBase.DB.Prepare("INSERT INTO posts (u_ID, title, post, cat1, cat2, cat3) VALUES (?, ?, ?, ?, ?, ?)")
+	statement, err := DataBase.DB.Prepare("INSERT INTO comments (u_ID, p_ID, comment) VALUES (?, ?, ?)")
 	if err != nil {
 		return err
 	}
 
-	_, err = statement.Exec(u_ID, title, post, cats[0], cats[1], cats[2])
+	_, err = statement.Exec(u_ID, p_ID, comment)
 	if err != nil {
 		return err
 	}

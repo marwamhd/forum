@@ -10,13 +10,23 @@
         let initialPosts = [];
         
         // Populate initialPosts with data from Go template
-        {{range .Posts}}
+        {{range .FilteredPosts}}
         initialPosts.push({
             id: {{.ID}},
             u_id: {{.U_ID}},
             title: "{{.Title}}",
             post: "{{.Post}}",
             username: "{{.Username}}",
+            comments : [
+                {{range .Comments}}
+                {
+                    id: {{.ID}},
+                    u_id: {{.U_ID}},
+                    post_id: {{.P_ID}},
+                    comment: "{{.Comment}}"
+                },
+                {{end}}
+            ]
         });
         {{end}}
     </script>

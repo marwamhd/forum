@@ -64,38 +64,59 @@ function changeContent(page) {
     }
 }
 
-function viewPost(pid){
+function viewPost(pid) {
     var contentDiv = document.getElementById('content');
-    contentDiv.innerHTML = pid;
+    contentDiv.innerHTML = ''; // Clear existing content
 
-    let a = getPostById(pid)
+    let a = getPostById(pid);
 
-    contentDiv.innerHTML =`
-    <div class="contentpost"><div class="posts"> 
-        <div class="post">
-            <div class="user">Post created by ${a.username}</div>
-            <div class="title">
-                    <h2>${a.title}</h2>
-            </div>
-            <div class="content">
-                    ${a.post}
-            </div>
+    // Start building the HTML content for the single post view
+    var htmlContent = `
+        <div class="contentpost">
+            <div class="posts">
+                <div class="post">
+                    <div class="user">Post created by ${a.username}</div>
+                    <div class="title">
+                        <h2>${a.title}</h2>
+                    </div>
+                    <div class="content">
+                        ${a.post}
+                    </div>
+                `;
+
+    // Iterate through comments and add HTML for each comment
+    a.comments.forEach(function(comment) {
+        htmlContent += `
+            <div class="comment">
+                <div class="user">Comment by ${comment.u_id}</div>
+                <div class="content">
+                    ${comment.comment}
+                </div>
+            </div>`;
+    });
+
+    // Add HTML for the comment form
+    htmlContent += `
             <div>
                 <form action="/addcomment" method="post">
-                        <div>
-                        <label for="comment">comment</label> 
-                        <br>
-
+                    <div>
+                        <label for="comment">Comment</label><br>
                         <textarea name="comment" id="comment"></textarea><br>
-                        <button type="submit">Add comment</button> 
-                        </div>
+                        <input type="hidden" name="pid" value="${a.id}">
+                        <button type="submit">Add comment</button>
+                    </div>
                 </form>
             </div>
         </div>
-    </div> ` ;
-    console.log(a)
-    
+    </div>`;
+
+    // Set the constructed HTML content to contentDiv.innerHTML
+    contentDiv.innerHTML = htmlContent;
+
+    // Log the post data for debugging purposes
+    console.log(a);
 }
+
 
 // Function to retrieve post object by id
 const getPostById = (postId) => {
