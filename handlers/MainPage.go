@@ -16,7 +16,7 @@ import (
 type content struct {
 	Authlevel     int
 	Posts         []use.Post
-	filteredPosts []use.Post
+	// filteredPosts []use.Post
 }
 
 func MainHandler(w http.ResponseWriter, r *http.Request) {
@@ -50,6 +50,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("error in getting posts", errForPost)
 		return
 	}
+<<<<<<< HEAD
 	com := "select * from posts"
 	values := r.URL.Query()[("cat")]
 	fmt.Println("val", values)
@@ -67,6 +68,22 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 	MainHtml, _ := template.ParseFiles("Templates/index.html")
 
 	err := MainHtml.Execute(w, content{authlevel, posts, filteredPosts})
+=======
+
+	// arr := []string{}
+	// for i, Fvalue := range <value from form> {
+	// 	if Fvalue == 1 {
+	// 		arr = append(arr, "cat" + strconv.Itoa(i+1))
+	// 	}
+	// // }
+	// com := "select * from posts where " + strings.Join(arr, " and ")
+
+	// filteredPosts, errForFiltered := use.DataBase.GetFilteredPosts(com)
+
+	MainHtml, _ := template.ParseFiles("Templates/index.html")
+
+	err := MainHtml.Execute(w, content{authlevel, posts})
+>>>>>>> refs/remotes/origin/master
 	if err != nil {
 		log.Fatal(err)
 		return
