@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/normalize.css">
     <link rel="stylesheet" href="static/CSS/main.css">
+    <script>
+        // Initialize initialPosts as an empty array
+        let initialPosts = [];
+        
+        // Populate initialPosts with data from Go template
+        {{range .Posts}}
+        initialPosts.push({
+            id: {{.ID}},
+            u_id: {{.U_ID}},
+            title: "{{.Title}}",
+            post: "{{.Post}}",
+            username: "{{.Username}}",
+        });
+        {{end}}
+    </script>
+
     <title>Document</title>
 </head>
 <body>
@@ -13,7 +29,7 @@
             <a href="#" onclick="changeContent('home')">
                 <div class="navButton">Forum</div>
             </a>
-            {{if eq . 0}}
+            {{if eq .Authlevel 0}}
             <a href="#" onclick="changeContent('login')">
                 <div class="navButton">Login</div>
             </a>
@@ -27,7 +43,7 @@
             {{end}}
         </header>        
         <main id="content">
-
+            
         </main>
         <footer>footer</footer>
     </div>

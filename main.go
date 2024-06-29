@@ -13,12 +13,13 @@ func main() {
 }
 
 func StartServer() {
+
 	http.HandleFunc("/", handlers.MainHandler)
 	http.HandleFunc("/signup", handlers.SignUpHandler)
 	http.HandleFunc("/login", handlers.LoginHandler)
 	http.HandleFunc("/logout", handlers.LogoutHandler)
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	err := http.ListenAndServeTLS(":4343", "server.pem", "server.key", nil)
+	err := http.ListenAndServeTLS("0.0.0.0:4343", "server.pem", "server.key", nil)
 	log.Fatal(err)
 }

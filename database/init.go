@@ -15,6 +15,14 @@ type DB struct {
 	*sql.DB
 }
 
+type Post struct {
+	ID       int
+	U_ID     int
+	Title    string
+	Post     string
+	Username string
+}
+
 var DataBase DB
 
 func init() {
@@ -28,6 +36,11 @@ func init() {
 	err = DataBase.DB.Ping()
 	if err != nil {
 		log.Fatal("error pinging database:", err)
+	}
+
+	_, err = DataBase.DB.Exec("PRAGMA foreign_keys = ON;")
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	DataBase.CreateTable()
@@ -199,4 +212,56 @@ func generateSessionID() uuid.UUID {
 	}
 	log.Printf("generated Version 4 UUID %v", u2)
 	return u2
+}
+
+// func (Database DB) InsertPost(u_ID int, title, post string) error {
+// 	statement, err := Database.DB.Prepare("INSERT INTO posts (u_ID, title, post) VALUES (?, ?, ?)")
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	_, err = statement.Exec(u_ID, title, post)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+func (Database DB) GetPosts() ([]Post, error) {
+	rows, err := Database.DB.Query("select * from posts")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var posts []Post
+	for rows.Next() {
+		var post Post
+		err = rows.Scan(&post.ID, &post.U_ID, &post.Title, &post.Post)
+		if err != nil {
+			return nil, err
+		}
+		post.Username, err = getUsername(post.U_ID)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, post)
+	}
+	return posts, nil
+}
+
+func getUsername(id int) (string, error) {
+	statement, err := DataBase.DB.Prepare("SELECT username FROM users WHERE id = ?")
+	if err != nil {
+		return "", err
+	}
+	defer statement.Close()
+
+	var username string
+	err = statement.QueryRow(id).Scan(&username)
+	if err != nil {
+		return "", err
+	}
+
+	return username, nil
 }

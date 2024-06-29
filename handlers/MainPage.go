@@ -11,6 +11,11 @@ import (
 	"github.com/gofrs/uuid"
 )
 
+type content struct {
+	Authlevel int
+	Posts     []use.Post
+}
+
 func MainHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		helpers.HandleErrorPages(w, http.StatusNotFound, http.StatusText(http.StatusNotFound))
@@ -39,11 +44,17 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		OverWriteCookieValue(w, r, uuid.Nil)
 	}
 
+	posts, errForPost := use.DataBase.GetPosts()
+	if errForPost != nil {
+		log.Println("error in getting posts", errForPost)
+		return
+	}
+
 	MainHtml, _ := template.ParseFiles("Templates/index.html")
 
-	err := MainHtml.Execute(w, authlevel)
+	err := MainHtml.Execute(w, content{authlevel, posts})
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return
 	}
 
@@ -165,12 +176,3 @@ func OverWriteCookieValue(w http.ResponseWriter, r *http.Request, sid uuid.UUID)
 
 	http.SetCookie(w, &cookie)
 }
-
-// func IsOnASession(r *http.Request) bool {
-// 	cook, _ := r.Cookie("session_id")
-
-// 	if cook.Value == "" {
-// 		return false
-// 	}
-
-// }

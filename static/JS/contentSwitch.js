@@ -4,70 +4,8 @@ function changeContent(page) {
  
     switch (page) {
         case 'home':
-            contentDiv.innerHTML = `
-                <div class="contentpost">
-                <div class="posts">  
-                    <div class="post">
-                        <div class="title">
-                            <h2>marwa</h2>
-                        </div>
-                        <div class="content">
-                            dnjencjdnjcndnckegfnbvgjnbjgb
-                        </div>
-                    </div><div class="post">
-                        <div class="title">
-                            <h2>marwa</h2>
-                        </div>
-                        <div class="content">
-                            dnjencjdnjcndnckegfnbvgjnbjgb
-                        </div>
-                    </div>
-                    <div class="post">
-                        <div class="title">
-                            <h2>marwa</h2>
-                        </div>
-                        <div class="content">
-                            dnjencjdnjcndnckegfnbvgjnbjgb
-                        </div>
-                    </div><div class="post">
-                        <div class="title">
-                            <h2>marwa</h2>
-                        </div>
-                        <div class="content">
-                            dnjencjdnjcndnckegfnbvgjnbjgb
-                        </div>
-                    </div><div class="post">
-                        <div class="title">
-                            <h2>marwa</h2>
-                        </div>
-                        <div class="content">
-                            dnjencjdnjcndnckegfnbvgjnbjgb
-                        </div>
-                    </div><div class="post">
-                        <div class="title">
-                            <h2>marwa</h2>
-                        </div>
-                        <div class="content">
-                            dnjencjdnjcndnckegfnbvgjnbjgb
-                        </div>
-                    </div><div class="post">
-                        <div class="title">
-                            <h2>marwa</h2>
-                        </div>
-                        <div class="content">
-                            dnjencjdnjcndnckegfnbvgjnbjgb
-                        </div>
-                    </div><div class="post">
-                        <div class="title">
-                            <h2>marwa</h2>
-                        </div>
-                        <div class="content">
-                            dnjencjdnjcndnckegfnbvgjnbjgb
-                        </div>
-                    </div>
-                </div>
-        
-            </div>`;
+            renderPosts();
+            contentDiv.innerHTML += `</div></div>`;
             break;
         case 'signup':
             contentDiv.innerHTML = `
@@ -107,3 +45,43 @@ function changeContent(page) {
             contentDiv.innerHTML = '<h2>Page not found!</h2>';
     }
 }
+
+
+function renderPosts() {
+    var contentDiv = document.getElementById('content');
+    contentDiv.innerHTML = ''; // Clear existing content
+
+    // Start building the HTML content
+    var htmlContent = `<div class="contentpost"><div class="posts">`;
+
+    // Iterate through initialPosts and construct each post HTML
+    initialPosts.forEach(function(post) {
+        htmlContent += `
+            <div class="post">
+                <div class="user">Post created by ${post.username}</div>
+                <div class="title">
+                    <h2>${post.title}</h2>
+                </div>
+                <div class="content">
+                    ${post.post}
+                </div>
+            </div>`;
+    });
+
+    // Complete the HTML content with closing div tags
+    htmlContent += `</div></div>`;
+
+    // Set the entire constructed HTML content to contentDiv.innerHTML
+    contentDiv.innerHTML = htmlContent;
+
+    // Optionally, you can log the constructed HTML to verify
+    console.log(contentDiv.innerHTML);
+}
+
+
+
+
+
+window.onload = function() {
+    renderPosts();
+};
