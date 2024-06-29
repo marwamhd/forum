@@ -70,19 +70,29 @@ function viewPost(pid){
 
     let a = getPostById(pid)
 
-    contentDiv.innerHTML =`<div class="contentpost"><div class="posts"> 
-            <div class="post">
-                <div class="user">Post created by ${a.username}</div>
-                <div class="title">
+    contentDiv.innerHTML =`
+    <div class="contentpost"><div class="posts"> 
+        <div class="post">
+            <div class="user">Post created by ${a.username}</div>
+            <div class="title">
                     <h2>${a.title}</h2>
-                </div>
-                <div class="content">
-                    ${a.post}
-                </div>
-                    <div>
-                </div>
             </div>
-        </div> ` ;
+            <div class="content">
+                    ${a.post}
+            </div>
+            <div>
+                <form action="/addcomment" method="post">
+                        <div>
+                        <label for="comment">comment</label> 
+                        <br>
+
+                        <textarea name="comment" id="comment"></textarea><br>
+                        <button type="submit">Add comment</button> 
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div> ` ;
     console.log(a)
     
 }

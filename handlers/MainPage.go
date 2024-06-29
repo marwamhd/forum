@@ -15,7 +15,7 @@ import (
 type content struct {
 	Authlevel     int
 	Posts         []use.Post
-	filteredPosts []use.Post
+	// filteredPosts []use.Post
 }
 
 func MainHandler(w http.ResponseWriter, r *http.Request) {
@@ -50,19 +50,19 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	arr := []string{}
-	for i, Fvalue := range <value from form> {
-		if Fvalue == 1 {
-			arr = append(arr, "cat" + strconv.Itoa(i+1))
-		}
-	}
-	com := "select * from posts where " + strings.Join(arr, " and ")
+	// arr := []string{}
+	// for i, Fvalue := range <value from form> {
+	// 	if Fvalue == 1 {
+	// 		arr = append(arr, "cat" + strconv.Itoa(i+1))
+	// 	}
+	// // }
+	// com := "select * from posts where " + strings.Join(arr, " and ")
 
-	filteredPosts, errForFiltered := use.DataBase.GetFilteredPosts(com)
+	// filteredPosts, errForFiltered := use.DataBase.GetFilteredPosts(com)
 
 	MainHtml, _ := template.ParseFiles("Templates/index.html")
 
-	err := MainHtml.Execute(w, content{authlevel, filteredPosts})
+	err := MainHtml.Execute(w, content{authlevel, posts})
 	if err != nil {
 		log.Fatal(err)
 		return
