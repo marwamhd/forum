@@ -64,6 +64,39 @@ function changeContent(page) {
     }
 }
 
+function viewPost(pid){
+    var contentDiv = document.getElementById('content');
+    contentDiv.innerHTML = pid;
+
+    let a = getPostById(pid)
+
+    contentDiv.innerHTML =`<div class="contentpost"><div class="posts"> 
+            <div class="post">
+                <div class="user">Post created by ${a.username}</div>
+                <div class="title">
+                    <h2>${a.title}</h2>
+                </div>
+                <div class="content">
+                    ${a.post}
+                </div>
+                    <div>
+                </div>
+            </div>
+        </div> ` ;
+    console.log(a)
+    
+}
+
+// Function to retrieve post object by id
+const getPostById = (postId) => {
+    for (let i = 0; i < initialPosts.length; i++) {
+        if (initialPosts[i].id === postId) {
+            return initialPosts[i];
+        }
+    }
+    return null; // Return null if no post found with the given id
+};
+
 
 function renderPosts() {
     var contentDiv = document.getElementById('content');
@@ -83,7 +116,10 @@ function renderPosts() {
                 <div class="content">
                     ${post.post}
                 </div>
-            </div>`;
+                <div>
+                <a href="#" onclick="viewPost( ${post.id})"> view </a>
+                </div>
+            </div> `;
     });
 
     // Complete the HTML content with closing div tags
