@@ -21,6 +21,6 @@ func StartServer() {
 	http.HandleFunc("/addpost", handlers.AddPostHandler)
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	err := http.ListenAndServeTLS("0.0.0.0:4343", "server.pem", "server.key", nil)
+	err := http.ListenAndServeTLS("0.0.0.0:8080", "server.pem", "server.key", nil)
 	log.Fatal(err)
 }

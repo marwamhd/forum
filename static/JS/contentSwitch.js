@@ -48,7 +48,6 @@ function changeContent(page) {
                     <input type="checkbox" name="category" value="1">Category 1
                     <input type="checkbox" name="category" value="2">Category 2
                     <input type="checkbox" name="category" value="3">Category 3
-                    <input type="checkbox" name="category" value="4">Category 4
                     <br>
                     <label for="title">Title</label>
                     <input type="text" name="title" id="title">

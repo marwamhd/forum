@@ -21,6 +21,9 @@ type Post struct {
 	Title    string
 	Post     string
 	Username string
+	Cat1     int
+	Cat2     int
+	Cat3     int
 }
 
 var DataBase DB
@@ -68,7 +71,11 @@ func (DataBase *DB) CreateTable() {
 		u_ID INTEGER NOT NULL,
 		title TEXT NOT NULL,
 		post TEXT NOT NULL,
+		cat1 INTEGER NOT NULL,
+		cat2 INTEGER NOT NULL,
+		cat3 INTEGER NOT NULL,
 		FOREIGN KEY (u_ID) REFERENCES users(id)
+
 	)`)
 	if err != nil {
 		log.Fatal(err)
@@ -237,7 +244,7 @@ func (Database DB) GetPosts() ([]Post, error) {
 	var posts []Post
 	for rows.Next() {
 		var post Post
-		err = rows.Scan(&post.ID, &post.U_ID, &post.Title, &post.Post)
+		err = rows.Scan(&post.ID, &post.U_ID, &post.Title, &post.Post, &post.Cat1, &post.Cat2, &post.Cat3)
 		if err != nil {
 			return nil, err
 		}
@@ -282,13 +289,13 @@ func GetAuthor(session string) (int, error) {
 	return id, nil
 }
 
-func (DataBase *DB) InsertPost(u_ID int, title, post string) error {
-	statement, err := DataBase.DB.Prepare("INSERT INTO posts (u_ID, title, post) VALUES (?, ?, ?)")
+func (DataBase *DB) InsertPost(u_ID int, title, post string, cats []int) error {
+	statement, err := DataBase.DB.Prepare("INSERT INTO posts (u_ID, title, post, cat1, cat2, cat3) VALUES (?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
 
-	_, err = statement.Exec(u_ID, title, post)
+	_, err = statement.Exec(u_ID, title, post, cats[0], cats[1], cats[2])
 	if err != nil {
 		return err
 	}

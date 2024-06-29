@@ -6,6 +6,7 @@ import (
 	"net/http"
 	use "pl/database"
 	"pl/helpers"
+	"strconv"
 	"text/template"
 
 	"github.com/gofrs/uuid"
@@ -210,36 +211,36 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	title := r.FormValue("title")
 	content := r.FormValue("post")
-	// category := r.Form["category"]
-	// fmt.Printf("category: %v\n", len(category))
-	// cats := []int{}
+	category := r.Form["category"]
+	fmt.Printf("category: %v\n", len(category))
+	cats := []int{}
 
-	// for i := 1; i <= 4; i++ {
-	// 	found := false
-	// 	for _, v := range category {
-	// 		n, err := strconv.Atoi(v)
-	// 		if err != nil {
-	// 			helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
-	// 			return
-	// 		}
-	// 		if n == i {
-	// 			found = true
-	// 			cats = append(cats, 1)
-	// 		}
-	// 	}
-	// 	if !found {
-	// 		cats = append(cats, 0)
-	// 	}
-	// }
+	for i := 1; i <= 4; i++ {
+		found := false
+		for _, v := range category {
+			n, err := strconv.Atoi(v)
+			if err != nil {
+				helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
+				return
+			}
+			if n == i {
+				found = true
+				cats = append(cats, 1)
+			}
+		}
+		if !found {
+			cats = append(cats, 0)
+		}
+	}
 
-	// fmt.Printf("cats: %v\n", cats)
+	fmt.Printf("cats: %v\n", cats)
 
 	if title == "" || content == "" {
 		helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
 
-	use.DataBase.InsertPost(author, title, content)
+	use.DataBase.InsertPost(author, title, content, cats)
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
