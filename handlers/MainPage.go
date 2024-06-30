@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"pl/database"
 	use "pl/database"
 	"pl/helpers"
 	"strconv"
@@ -338,6 +339,109 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type jsonResponse struct {
-	Success bool   `json:"success"`
-	Message string `json:"message"`
+	Success  bool   `json:"success"`
+	Message  string `json:"message"`
+	Likes    int    `json:"likes"`
+	Dislikes int    `json:"dislikes"`
+}
+
+func AddLikePostHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		helpers.HandleErrorPages(w, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
+		return
+	}
+
+	cook, cookieFound := r.Cookie("session_id")
+	if cookieFound != nil {
+		log.Println(cookieFound, "3231")
+		OverWriteCookieValue(w, r, uuid.Nil)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	fmt.Println("12278")
+
+	if cook.Value == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	fmt.Println("1212284")
+
+	activeSession, errForSes := use.DataBase.SessionExists(cook.Value)
+
+	if !activeSession || errForSes != nil {
+		OverWriteCookieValue(w, r, uuid.Nil)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	fmt.Println("2121293")
+
+	author, err := use.GetAuthor(cook.Value)
+	if err != nil {
+		log.Println("error in getting author", err)
+		return
+	}
+
+	postID := r.FormValue("pid")
+	like := r.FormValue("like")
+	fmt.Printf("author: %v\n", author)
+
+	if postID == "" || like == "" {
+		helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
+		return
+	}
+
+	fmt.Printf("like: %v\n", like)
+
+	pid, err := strconv.Atoi(postID)
+	if err != nil {
+		helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
+		return
+	}
+
+	likenum, err := strconv.Atoi(like)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		return
+	}
+
+	fmt.Println("here")
+
+	fmt.Printf("pid: %v\n", pid)
+
+	err = use.DataBase.InsertLike(author, pid, likenum)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		return
+	}
+
+	fmt.Println("like added.")
+
+	likes, dislikes, err := database.DataBase.LikesDislikesTotal(postID)
+
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		return
+	}
+
+	fmt.Printf("likes: %v\n", likes)
+	fmt.Printf("dislikes: %v\n", dislikes)
+
+	// Create a JSON response struct
+	response := jsonResponse{
+		Success:  true,
+		Message:  "like added successfully",
+		Likes:    likes,
+		Dislikes: dislikes,
+	}
+
+	// Set content type and encode response as JSON
+	w.Header().Set("Content-Type", "application/json")
+	// Encode the response struct directly
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "Failed to encode JSON", http.StatusInternalServerError)
+		return
+	}
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gofrs/uuid"
 	_ "github.com/mattn/go-sqlite3"
@@ -25,6 +26,8 @@ type Post struct {
 	Cat2     int
 	Cat3     int
 	Comments []Comment
+	Likes    int
+	Dislikes int
 }
 
 type Comment struct {
@@ -97,6 +100,19 @@ func (DataBase *DB) CreateTable() {
 		cat3 INTEGER NOT NULL,
 		FOREIGN KEY (u_ID) REFERENCES users(id)
 
+	)`)
+
+	if err != nil {
+		log.Fatal(err, "a")
+	}
+	_, err = DataBase.DB.Exec(`
+	CREATE TABLE IF NOT EXISTS author_liked_post (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		u_ID INTEGER NOT NULL,
+		p_ID INTEGER NOT NULL,
+		liked INTEGER NOT NULL,
+		FOREIGN KEY (u_ID) REFERENCES users(id),
+		FOREIGN KEY (p_ID) REFERENCES posts(id)
 	)`)
 
 	if err != nil {
@@ -323,6 +339,16 @@ func (Database DB) GetFilteredPosts(str string) ([]Post, error) {
 		}
 
 		post.Comments = comments
+
+		likes, disliks, err := DataBase.LikesDislikesTotal(strconv.Itoa(post.ID))
+		if err != nil {
+			fmt.Printf("err: %v\n", err)
+			return nil, err
+		}
+
+		post.Likes = likes
+		post.Dislikes = disliks
+
 		posts = append(posts, post)
 	}
 
@@ -385,4 +411,82 @@ func (DataBase *DB) InsertComment(u_ID, p_ID int, comment string) error {
 		return err
 	}
 	return nil
+}
+
+func (DataBase *DB) InsertLike(u_ID, p_ID int, like int) error {
+
+	lid, err := DataBase.LikeExists(p_ID, u_ID)
+	if err != nil {
+		return err
+	}
+
+	if lid != 0 {
+		statement, err := DataBase.DB.Prepare("update author_liked_post set liked = ? where id = ?")
+		if err != nil {
+			return err
+		}
+
+		_, err = statement.Exec(like, lid)
+		if err != nil {
+			return err
+		}
+	} else {
+		statement, err := DataBase.DB.Prepare("insert into author_liked_post (u_id, p_id, liked) VALUES (?, ?, ?)")
+		if err != nil {
+			return err
+		}
+
+		_, err = statement.Exec(u_ID, p_ID, like)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (DataBase *DB) LikeExists(pid, uid int) (int, error) {
+	statement, err := DataBase.DB.Prepare("SELECT id FROM author_liked_post WHERE u_id = ? and p_id = ?")
+	if err != nil {
+		return 0, err
+	}
+	defer statement.Close()
+
+	var id int
+	err = statement.QueryRow(uid, pid).Scan(&id)
+	if err == sql.ErrNoRows {
+		return 0, nil
+	} else if err != nil {
+		return 0, err
+	}
+
+	return id, nil
+}
+
+func (DataBase *DB) LikesDislikesTotal(pid string) (int, int, error) {
+	likedStatement, err := DataBase.DB.Prepare("SELECT COUNT(id) AS total_likes FROM author_liked_post WHERE p_id = ? AND liked = 1;")
+	if err != nil {
+		return 0, 0, err
+	}
+	defer likedStatement.Close()
+
+	var totalLikes int
+	err = likedStatement.QueryRow(pid).Scan(&totalLikes)
+	if err != nil && err != sql.ErrNoRows {
+		return 0, 0, err
+	}
+
+	DislikedStatement, err := DataBase.DB.Prepare("SELECT COUNT(id) AS total_likes FROM author_liked_post WHERE p_id = ? AND liked = 0;")
+	if err != nil {
+		return 0, 0, err
+	}
+	defer DislikedStatement.Close()
+
+	var totalDisLikes int
+	err = DislikedStatement.QueryRow(pid).Scan(&totalDisLikes)
+	if err != nil && err != sql.ErrNoRows {
+		return 0, 0, err
+	}
+
+	return totalLikes, totalDisLikes, nil
 }

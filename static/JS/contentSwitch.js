@@ -82,6 +82,18 @@ function viewPost(pid) {
                     <div class="content">
                         ${a.post}
                     </div>
+                    <form id="likeForm" action="/addlike">
+                        <input onclick="submitLike()" type="radio" id="like" name="like" value="1">
+                        <label for="like">Like</label><br>
+                        <input onclick="submitLike()" type="radio" id="dislike" name="like" value="0">
+                        <label for="dislike">Dislike</label><br>
+                        <input onclick="submitLike()" type="radio" id="prefernottosay" name="like" value="2">
+                        <label for="prefernottosay">Prefernottosay</label>
+                         <input type="hidden" name="pid" value="${a.id}">
+                    </form>
+
+                    <div id="counterForLikes" > Likes count: ${a.likes} Dislikes count: ${a.dislikes} </div>
+
                 `;
 
     // Iterate through comments and add HTML for each comment
@@ -173,6 +185,9 @@ window.onload = function() {
 function submitComment(postId) {
     const form = document.getElementById(`commentForm-${postId}`);
     const formData = new FormData(form);
+
+
+    alert(formData)
     
     fetch('/addcomment', {
         method: 'POST',
@@ -235,3 +250,35 @@ function AddToThePost(postId, comment) {
 
 }
 
+function submitLike() {
+    const form = document.getElementById('likeForm');
+    const formData = new FormData(form);
+
+
+    fetch('/addlike', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Server response:', data);
+        // Handle the response accordingly
+        if (data.success) {
+            console.log('Like/dislike submitted successfully');
+            UpdatesLikesCounter(data.likes, data.dislikes)
+            // Optionally, update UI or perform additional actions
+        } else {
+            console.error('Error submitting like/dislike:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+}
+
+
+
+function UpdatesLikesCounter(likes, dislikes){
+    var CounterDiv = document.getElementById("counterForLikes")
+    CounterDiv.innerHTML = "Likes count: "+likes + " Dislikes count: "+ dislikes
+}
