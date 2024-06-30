@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -63,8 +64,6 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("error in filtering posts", errForFiltered)
 		return
 	}
-
-	fmt.Printf("filteredPosts: %v\n", filteredPosts)
 
 	MainHtml, _ := template.ParseFiles("Templates/index.html")
 
@@ -276,10 +275,14 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println("278")
+
 	if cook.Value == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
+
+	fmt.Println("284")
 
 	activeSession, errForSes := use.DataBase.SessionExists(cook.Value)
 
@@ -288,6 +291,8 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
+
+	fmt.Println("293")
 
 	author, err := use.GetAuthor(cook.Value)
 	if err != nil {
@@ -303,13 +308,36 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println("309")
+
 	pid, err := strconv.Atoi(postID)
 	if err != nil {
 		helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
 
+	fmt.Println("here")
+
 	use.DataBase.InsertComment(author, pid, content)
 
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	fmt.Println("Comment added.")
+
+	// Create a JSON response struct
+	response := jsonResponse{
+		Success: true,
+		Message: "Comment added successfully",
+	}
+
+	// Set content type and encode response as JSON
+	w.Header().Set("Content-Type", "application/json")
+	// Encode the response struct directly
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "Failed to encode JSON", http.StatusInternalServerError)
+		return
+	}
+}
+
+type jsonResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
 }

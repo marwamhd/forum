@@ -98,14 +98,14 @@ function viewPost(pid) {
     // Add HTML for the comment form
     htmlContent += `
             <div>
-                <form action="/addcomment" method="post">
-                    <div>
-                        <label for="comment">Comment</label><br>
-                        <textarea name="comment" id="comment"></textarea><br>
-                        <input type="hidden" name="pid" value="${a.id}">
-                        <button type="submit">Add comment</button>
-                    </div>
-                </form>
+       <form id="commentForm-${a.id}">
+            <div>
+                <label for="comment">Comment</label><br>
+                <textarea name="comment" id="comment"></textarea><br>
+                <input type="hidden" name="pid" value="${a.id}">
+                <button type="button" onclick="submitComment(${a.id})">Add comment</button>
+            </div>
+        </form>
             </div>
         </div>
     </div>`;
@@ -114,7 +114,6 @@ function viewPost(pid) {
     contentDiv.innerHTML = htmlContent;
 
     // Log the post data for debugging purposes
-    console.log(a);
 }
 
 
@@ -160,7 +159,6 @@ function renderPosts() {
     contentDiv.innerHTML = htmlContent;
 
     // Optionally, you can log the constructed HTML to verify
-    console.log(contentDiv.innerHTML);
 }
 
 
@@ -170,3 +168,70 @@ function renderPosts() {
 window.onload = function() {
     renderPosts();
 };
+
+// AJAX function to submit the comment
+function submitComment(postId) {
+    const form = document.getElementById(`commentForm-${postId}`);
+    const formData = new FormData(form);
+    
+    fetch('/addcomment', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(text => {
+        console.log('Server response:', text);
+        try {
+            const data = JSON.parse(text);
+            if (data.success) {
+                console.log('Comment added:', data);
+                // Reload the page to view the newly added comment
+                
+                AddToThePost(postId, formData.get('comment'));  
+            } else {
+                console.error('Error adding comment:', data.error);
+            }
+        } catch (error) {
+            console.error('JSON parsing error:', error);
+        }
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+    
+    
+    
+}
+
+
+
+function AddToThePost(postId, comment) {
+
+    var contentDiv = document.querySelector('.post');
+
+    // Create a new comment element
+    var newComment = document.createElement('div');
+    newComment.classList.add('comment');
+    newComment.innerHTML = `
+        <div class="user">Comment by You</div>
+        <div class="content">
+            ${comment}
+        </div>`;
+
+    var formElement = document.getElementById('commentForm-'+ postId);
+
+    contentDiv.insertBefore(newComment, formElement.parentNode);
+
+    //add to initialPosts
+    initialPosts.forEach(function(post) {
+        if (post.id === postId) {
+            post.comments.push({
+                u_id: 'You',
+                comment: comment
+            });
+        }
+    }
+    );
+
+}
+
