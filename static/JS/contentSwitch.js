@@ -74,6 +74,9 @@ function changeContent(page) {
 }
 
 
+
+
+
 function viewPost(pid) {
     var contentDiv = document.getElementById('content');
     contentDiv.innerHTML = ''; // Clear existing content
@@ -156,6 +159,17 @@ const getPostById = (postId) => {
     for (let i = 0; i < initialPosts.length; i++) {
         if (initialPosts[i].id === postId) {
             return initialPosts[i];
+        }
+    }
+    return null; // Return null if no post found with the given id
+};
+
+const getCommentsByPostId = (postId) => {
+    for (let i = 0; i < initialPosts.length; i++) {
+        for (let j= 0; j < initialPosts[i].comments.length; j++) {
+            if (initialPosts[i].comments[j].ID === postId) {
+                return initialPosts[i];
+            }
         }
     }
     return null; // Return null if no post found with the given id
