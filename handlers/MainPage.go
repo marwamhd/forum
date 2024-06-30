@@ -20,6 +20,7 @@ type content struct {
 	U_id          int
 	Posts         []use.Post
 	FilteredPosts []use.Post
+	LikedPosts    []use.Post
 }
 
 type RequestBody struct {
@@ -79,9 +80,15 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	likedPost, errForLiked := use.DataBase.WhatUserLikedPosts(author)
+	if errForLiked != nil {
+		log.Println("error in liked posts", errForLiked)
+		return
+	}
+
 	MainHtml, _ := template.ParseFiles("Templates/index.html")
 
-	err := MainHtml.Execute(w, content{authlevel, author, posts, filteredPosts})
+	err := MainHtml.Execute(w, content{authlevel, author, posts, filteredPosts, likedPost})
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -125,21 +132,6 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	use.DataBase.InsertUser(email, username, password)
-
-	// authlevel, sid, err := use.DataBase.Login(email, password, r)
-	// if err != nil && (err.Error() == "invalid credentials" || err.Error() == "user already has an active session") {
-	// 	helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest)+" "+err.Error())
-	// 	return
-	// } else if err != nil {
-	// 	helpers.HandleErrorPages(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError)+" "+err.Error())
-	// 	return
-	// }
-	// if authlevel == 1 {
-	// 	fmt.Println("authorized")
-	// }
-
-	// OverWriteCookieValue(w, r, sid)
-
 	LoginHandler(w, r)
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)

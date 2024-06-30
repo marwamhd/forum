@@ -8,6 +8,7 @@
     <script>
         // Initialize initialPosts as an empty array
         let initialPosts = [];
+        let likedPosts = [];
 
         let useridentification = {{.U_id}};
         
@@ -33,6 +34,30 @@
             dislikes: "{{.Dislikes}}"
         });
         {{end}}
+
+        {{range .LikedPosts}}
+        likedPosts.push({
+            id: {{.ID}},
+            u_id: {{.U_ID}},
+            title: "{{.Title}}",
+            post: "{{.Post}}",
+            username: "{{.Username}}",
+            comments : [
+                {{range .Comments}}
+                {
+                    id: {{.ID}},
+                    u_id: {{.U_ID}},
+                    post_id: {{.P_ID}},
+                    comment: "{{.Comment}}"
+                },
+                {{end}}
+            ],
+            likes: "{{.Likes}}",
+            dislikes: "{{.Dislikes}}"
+        });
+        {{end}}
+
+
     </script>
 
     <title>Document</title>
@@ -57,15 +82,12 @@
             <a href="#" onclick="changeContent('addpost')">
                 <div class="navButton">Create Post</div>
             </a>          
-            <a href="/likedpost">
+            <a href="#" onclick="changeContent('likedpost')">
                 <div class="navButton">Liked post</div>
             </a>
             {{end}}
         </header>        
         <main id="content">
-            <div class="contentpost">
-                hello
-            </div>
 
         </main>
         <footer>footer
