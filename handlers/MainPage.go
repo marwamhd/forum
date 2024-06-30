@@ -21,6 +21,10 @@ type content struct {
 	FilteredPosts []use.Post
 }
 
+type RequestBody struct {
+	Pid int `json:"pid"`
+}
+
 func MainHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		helpers.HandleErrorPages(w, http.StatusNotFound, http.StatusText(http.StatusNotFound))
@@ -345,6 +349,12 @@ type jsonResponse struct {
 	Dislikes int    `json:"dislikes"`
 }
 
+type jsons struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+	Userl   int    `json:"userl"`
+}
+
 func AddLikePostHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		helpers.HandleErrorPages(w, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
@@ -436,10 +446,90 @@ func AddLikePostHandler(w http.ResponseWriter, r *http.Request) {
 		Likes:    likes,
 		Dislikes: dislikes,
 	}
-
-	// Set content type and encode response as JSON
 	w.Header().Set("Content-Type", "application/json")
-	// Encode the response struct directly
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "Failed to encode JSON", http.StatusInternalServerError)
+		return
+	}
+}
+
+func DidUserLike(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("post")
+	if r.Method != "POST" {
+		helpers.HandleErrorPages(w, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
+		return
+	}
+
+	cook, cookieFound := r.Cookie("session_id")
+	if cookieFound != nil {
+		log.Println(cookieFound, "3231")
+		OverWriteCookieValue(w, r, uuid.Nil)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	fmt.Println("sess")
+
+	fmt.Println("12278")
+
+	if cook.Value == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	fmt.Println("1212284")
+
+	activeSession, errForSes := use.DataBase.SessionExists(cook.Value)
+
+	if !activeSession || errForSes != nil {
+		OverWriteCookieValue(w, r, uuid.Nil)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	fmt.Println("ass")
+
+	fmt.Println("2121293a")
+
+	author, err := use.GetAuthor(cook.Value)
+	if err != nil {
+		log.Println("error in getting author", err)
+		return
+	}
+
+	var requestBody RequestBody
+	err = json.NewDecoder(r.Body).Decode(&requestBody)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	postID := requestBody.Pid
+	fmt.Printf("author: %v\n", author)
+
+	fmt.Printf("postID: %v\n", postID)
+
+	if postID == 0 {
+		helpers.HandleErrorPages(w, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
+		return
+	}
+
+	fmt.Printf("pid: %v\n", postID)
+
+	likedwhat, err := database.DataBase.WhatUserLiked(author, postID)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		return
+	}
+
+	// Create a JSON response struct
+	response := jsons{
+		Success: true,
+		Message: "like added successfully",
+		Userl:   likedwhat,
+	}
+	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(response); err != nil {
 		http.Error(w, "Failed to encode JSON", http.StatusInternalServerError)
 		return

@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -489,4 +490,18 @@ func (DataBase *DB) LikesDislikesTotal(pid string) (int, int, error) {
 	}
 
 	return totalLikes, totalDisLikes, nil
+}
+
+func (DataBase *DB) WhatUserLiked(uID, pID int) (int, error) {
+	var liked int
+
+	// Check if the user liked the post
+	err := DataBase.DB.QueryRow("SELECT liked FROM author_liked_post WHERE p_id = ? AND u_id = ?", pID, uID).Scan(&liked)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return 2, nil
+		}
+		return -1, err
+	}
+	return liked, nil
 }

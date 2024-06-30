@@ -24,6 +24,7 @@ func StartServer() {
 	http.HandleFunc("/addpost", handlers.AddPostHandler)
 	http.HandleFunc("/addcomment", handlers.AddCommentHandler)
 	http.HandleFunc("/addlike", handlers.AddLikePostHandler)
+	http.HandleFunc("/diduserlike", handlers.DidUserLike)
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	err := http.ListenAndServeTLS("0.0.0.0:5050", "server.pem", "server.key", nil)

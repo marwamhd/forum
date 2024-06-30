@@ -4,6 +4,7 @@ function changeContent(page) {
  
     switch (page) {
         case 'home':
+            location.reload();
             renderPosts();
             contentDiv.innerHTML += `</div></div>`;
             break;
@@ -67,6 +68,8 @@ function changeContent(page) {
 function viewPost(pid) {
     var contentDiv = document.getElementById('content');
     contentDiv.innerHTML = ''; // Clear existing content
+
+    GetIfUserLiked(pid)
 
     let a = getPostById(pid);
 
@@ -181,14 +184,10 @@ window.onload = function() {
     renderPosts();
 };
 
-// AJAX function to submit the comment
 function submitComment(postId) {
     const form = document.getElementById(`commentForm-${postId}`);
     const formData = new FormData(form);
 
-
-    alert(formData)
-    
     fetch('/addcomment', {
         method: 'POST',
         body: formData
@@ -213,9 +212,6 @@ function submitComment(postId) {
     .catch(error => {
         console.error('Fetch error:', error);
     });
-    
-    
-    
 }
 
 
@@ -281,4 +277,42 @@ function submitLike() {
 function UpdatesLikesCounter(likes, dislikes){
     var CounterDiv = document.getElementById("counterForLikes")
     CounterDiv.innerHTML = "Likes count: "+likes + " Dislikes count: "+ dislikes
+}
+
+function GetIfUserLiked(pid) {
+    const requestData = {
+        pid: pid
+    };
+
+    fetch('/diduserlike', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Server response:', data);
+        // Handle the response accordingly
+        if (data.success) {
+            console.log('User liked status retrieved successfully');
+            switch (data.userl) {
+                case 0:
+                    document.getElementById('dislike').checked = true; // Assuming 'disliked' is the ID of the dislike radio button
+                    break;
+                case 1:
+                    document.getElementById('like').checked = true; // Assuming 'liked' is the ID of the like radio button
+                    break;
+                default:
+                    console.error('Unknown user liked status:', data.userl);
+                    break;
+            }
+        } else {
+            console.error('Error retrieving user liked status:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
 }
