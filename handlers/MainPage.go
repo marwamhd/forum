@@ -17,6 +17,7 @@ import (
 
 type content struct {
 	Authlevel     int
+	U_id          int
 	Posts         []use.Post
 	FilteredPosts []use.Post
 }
@@ -33,6 +34,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 
 	cook, cookieFound := r.Cookie("session_id")
 	authlevel := 1
+	var author int
 
 	if cookieFound != nil {
 		log.Println(cookieFound, "31")
@@ -46,6 +48,13 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		if !activeSession || errForSes != nil {
 			authlevel = 0
 			OverWriteCookieValue(w, r, uuid.Nil)
+		}
+		var err error
+
+		author, err = use.GetAuthor(cook.Value)
+		if err != nil {
+			log.Println("error in getting author", err)
+			return
 		}
 	}
 
@@ -72,7 +81,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 
 	MainHtml, _ := template.ParseFiles("Templates/index.html")
 
-	err := MainHtml.Execute(w, content{authlevel, posts, filteredPosts})
+	err := MainHtml.Execute(w, content{authlevel, author, posts, filteredPosts})
 	if err != nil {
 		log.Fatal(err)
 		return

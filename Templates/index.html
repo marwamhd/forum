@@ -8,6 +8,8 @@
     <script>
         // Initialize initialPosts as an empty array
         let initialPosts = [];
+
+        let useridentification = {{.U_id}};
         
         // Populate initialPosts with data from Go template
         {{range .FilteredPosts}}
