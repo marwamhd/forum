@@ -81,6 +81,7 @@ function viewPost(pid) {
     GetIfUserLiked(pid)
 
     let a = getPostById(pid);
+    let b = getCommentsByPostId(pid);
 
     // Start building the HTML content for the single post view
     var htmlContent = `
@@ -116,6 +117,15 @@ function viewPost(pid) {
                 <div class="content">
                     ${comment.comment}
                 </div>
+                 <form id="likeCommentForm" action="/addlikeComment">
+                        <input onclick="submitLikeComment()" type="radio" id="like" name="like" value="1">
+                        <label for="like">Like</label><br>
+                        <input onclick="submitLikeComment()" type="radio" id="dislike" name="like" value="0">
+                        <label for="dislike">Dislike</label><br>
+                        <input onclick="submitLikeComment()" type="radio" id="prefernottosay" name="like" value="2">
+                        <label for="prefernottosay">Prefernottosay</label>
+                         <input type="hidden" name="cid" value="${b.id}">
+                    </form>
             </div>`;
     });
 
@@ -318,6 +328,34 @@ function submitLike() {
 function UpdatesLikesCounter(likes, dislikes){
     var CounterDiv = document.getElementById("counterForLikes")
     CounterDiv.innerHTML = "Likes count: "+likes + " Dislikes count: "+ dislikes
+}
+
+
+
+function submitLikeComment() {
+    const form = document.getElementById('likeCommentForm');
+    const formData = new FormData(form);
+
+
+    fetch('/addlikeComment', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Server response:', data);
+        // Handle the response accordingly
+        if (data.success) {
+            console.log('Like/dislike comment submitted successfully');
+            UpdatesLikesCounter(data.likes, data.dislikes)
+            // Optionally, update UI or perform additional actions
+        } else {
+            console.error('Error submitting comment like/dislike:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
 }
 
 function GetIfUserLiked(pid) {
