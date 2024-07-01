@@ -1,6 +1,20 @@
 body{
-    background-color: rgb(233, 24, 233);
-    color: white;
+    background-color: #faeeef;
+    color: rgb(0, 0, 0);
+}
+
+.star{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+a{
+    text-decoration: none;
+    font-size: 1.15rem;
+    font-family: monospace;
+    font-weight: bold;
+    color: rgb(255, 120, 190);
 }
 
 .container{
@@ -17,6 +31,22 @@ body{
 
 .post {
     margin-bottom: 40px;
+    border: 3px dashed white;
+    min-width: 600px;
+    max-width: 600px;
+    border-radius: 10px;
+    padding:  10px;
+}
+
+.title, .content{
+    text-align: center;
+    line-break: anywhere;
+}
+
+.viewbtn{
+    text-align: right;
+    color: grey;
+    float: right;
 }
 
 header{
@@ -31,7 +61,8 @@ header{
 
 main{
     min-height: 80vh;
-    background-color: purple;
+    /* background-color: rgba(137, 43, 226, 0);
+    background-color: purple; */
 }
 
 
@@ -40,4 +71,21 @@ main{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+footer{
+    position: fixed;
+    bottom: 2%;
+    left: 5;
+    text-decoration: none;
+    font-size: 1.15rem;
+    font-family: monospace;
+    font-weight: bold;
+    color: rgb(255, 120, 190);
+}
+
+button{
+    background-color: rgb(255, 255, 255);
+    color: rgb(255, 120, 190);
+    border: none;
 }

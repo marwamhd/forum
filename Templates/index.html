@@ -15,45 +15,49 @@
         // Populate initialPosts with data from Go template
         {{range .FilteredPosts}}
         initialPosts.push({
-            id: {{.ID}},
-            u_id: {{.U_ID}},
-            title: "{{.Title}}",
-            post: "{{.Post}}",
-            username: "{{.Username}}",
-            comments : [
+            ID: {{.ID}},
+            U_ID: {{.U_ID}},
+            Title: "{{.Title}}",
+            Post: "{{.Post}}",
+            Username: "{{.Username}}",
+            Comments : [
                 {{range .Comments}}
                 {
-                    id: {{.ID}},
-                    u_id: {{.U_ID}},
-                    post_id: {{.P_ID}},
-                    comment: "{{.Comment}}"
+                    ID: {{.ID}},
+                    U_ID: {{.U_ID}},
+                    P_ID: {{.P_ID}},
+                    Comment: "{{.Comment}}",
+                    Likes: {{.Likes}},
+                    Dislikes: {{.Dislikes}}
                 },
                 {{end}}
             ],
-            likes: "{{.Likes}}",
-            dislikes: "{{.Dislikes}}"
+            Likes: "{{.Likes}}",
+            Dislikes: "{{.Dislikes}}"
         });
         {{end}}
 
         {{range .LikedPosts}}
         likedPosts.push({
-            id: {{.ID}},
-            u_id: {{.U_ID}},
-            title: "{{.Title}}",
-            post: "{{.Post}}",
-            username: "{{.Username}}",
-            comments : [
+            ID: {{.ID}},
+            U_ID: {{.U_ID}},
+            Title: "{{.Title}}",
+            Post: "{{.Post}}",
+            Username: "{{.Username}}",
+            Comments : [
                 {{range .Comments}}
                 {
-                    id: {{.ID}},
-                    u_id: {{.U_ID}},
-                    post_id: {{.P_ID}},
-                    comment: "{{.Comment}}"
+                    ID: {{.ID}},
+                    U_ID: {{.U_ID}},
+                    P_ID: {{.P_ID}},
+                    Comment: "{{.Comment}}",
+                    Likes: {{.Likes}},
+                    Dislikes: {{.Dislikes}}
                 },
                 {{end}}
             ],
-            likes: "{{.Likes}}",
-            dislikes: "{{.Dislikes}}"
+            Likes: "{{.Likes}}",
+            Dislikes: "{{.Dislikes}}"
         });
         {{end}}
 
@@ -65,8 +69,8 @@
 <body>
     <div class="container">
         <header>
-            <a href="#" onclick="changeContent('home')">
-                <div class="navButton">Forum</div>
+            <a href="#"  onclick="changeContent('home')">
+                <img class="star"  src="static/Image/marwastar.jpg" alt="">
             </a>
             {{if eq .Authlevel 0}}
             <a href="#" onclick="changeContent('login')">
@@ -90,9 +94,10 @@
         <main id="content">
 
         </main>
-        <footer>footer
-            <form action="/" method="get">
-                <legend>Catigories</legend>
+
+        <footer>
+        <form action="/" method="get">
+                <legend>Categories</legend>
                 <label>
                     <input type="checkbox" name="cat" value="cat1"> cat1
                 </label><br>

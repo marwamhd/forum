@@ -5,7 +5,7 @@ function changeContent(page) {
     switch (page) {
         case 'home':
             location.reload();
-            renderPosts();
+            renderPosts(initialPosts);
             contentDiv.innerHTML += `</div></div>`;
             break;
         case 'signup':
@@ -64,7 +64,7 @@ function changeContent(page) {
             renderPostsByID(useridentification)
             break;
         case 'likedpost':
-            renderLikedPosts();
+            renderPosts(likedPosts);
             contentDiv.innerHTML += `</div></div>`;
         break;
  
@@ -74,25 +74,25 @@ function changeContent(page) {
 }
 
 
-function viewPost(pid) {
+function viewPost(pid, array) {
     var contentDiv = document.getElementById('content');
     contentDiv.innerHTML = ''; // Clear existing content
 
     GetIfUserLiked(pid)
 
-    let a = getPostById(pid);
+    let a = getPostByIdAndArray(array, pid);
 
     // Start building the HTML content for the single post view
     var htmlContent = `
         <div class="contentpost">
             <div class="posts">
                 <div class="post">
-                    <div class="user">Post created by ${a.username}</div>
+                    <div class="user">Post created by ${a.Username}</div>
                     <div class="title">
-                        <h2>${a.title}</h2>
+                        <h2>${a.Title}</h2>
                     </div>
                     <div class="content">
-                        ${a.post}
+                        ${a.Post}
                     </div>
                     <form id="likeForm" action="/addlike">
                         <input onclick="submitLike()" type="radio" id="like" name="like" value="1">
@@ -101,33 +101,47 @@ function viewPost(pid) {
                         <label for="dislike">Dislike</label><br>
                         <input onclick="submitLike()" type="radio" id="prefernottosay" name="like" value="2">
                         <label for="prefernottosay">Prefernottosay</label>
-                         <input type="hidden" name="pid" value="${a.id}">
+                         <input type="hidden" name="pid" value="${a.ID}">
                     </form>
 
-                    <div id="counterForLikes" > Likes count: ${a.likes} Dislikes count: ${a.dislikes} </div>
+                    <div id="counterForLikes" > Likes count: ${a.Likes} Dislikes count: ${a.Dislikes} </div>
 
                 `;
 
     // Iterate through comments and add HTML for each comment
-    a.comments.forEach(function(comment) {
+    a.Comments.forEach(function(comment) {
+        GetIfUserLikedComment(a.ID, comment.ID)
+        console.log(comment)
         htmlContent += `
             <div class="comment">
-                <div class="user">Comment by ${comment.u_id}</div>
+                <div class="user">Comment by ${comment.U_ID}</div>
                 <div class="content">
-                    ${comment.comment}
+                    ${comment.Comment}
                 </div>
+                    <form id="CommentlikeForm${comment.ID}" action="/addCommentlike">
+                        <input onclick="submitCommentLike(${comment.ID})" type="radio" id="like${comment.ID}" name="like${comment.ID}" value="1">
+                        <label for="like${comment.ID}">Like</label><br>
+                        <input onclick="submitCommentLike(${comment.ID})" type="radio" id="dislike${comment.ID}" name="like${comment.ID}" value="0">
+                        <label for="dislike${comment.ID}">Dislike</label><br>
+                        <input onclick="submitCommentLike(${comment.ID})" type="radio" id="prefernottosay${comment.ID}" name="like${comment.ID}" value="2">
+                        <label for="prefernottosay${comment.ID}">Prefernottosay</label>
+                        <input type="hidden" name="cid" value="${comment.ID}">
+                        <input type="hidden" name="pid" value="${a.ID}">
+                    </form>
+
+                    <div id="counterForLikes${comment.ID}" > Likes count: ${comment.Likes} Dislikes count: ${comment.Dislikes} </div>
             </div>`;
     });
 
     // Add HTML for the comment form
     htmlContent += `
             <div>
-       <form id="commentForm-${a.id}">
+       <form id="commentForm-${a.ID}">
             <div>
                 <label for="comment">Comment</label><br>
                 <textarea name="comment" id="comment"></textarea><br>
-                <input type="hidden" name="pid" value="${a.id}">
-                <button type="button" onclick="submitComment(${a.id})">Add comment</button>
+                <input type="hidden" name="pid" value="${a.ID}">
+                <button type="button" onclick="submitComment(${a.ID})">Add comment</button>
             </div>
         </form>
             </div>
@@ -144,15 +158,27 @@ function viewPost(pid) {
 // Function to retrieve post object by id
 const getPostById = (postId) => {
     for (let i = 0; i < initialPosts.length; i++) {
-        if (initialPosts[i].id === postId) {
+        if (initialPosts[i].ID === postId) {
             return initialPosts[i];
         }
     }
     return null; // Return null if no post found with the given id
 };
 
+// Function to retrieve post object by id
+const getPostByIdAndArray = (array, postId) => {
 
-function renderPosts() {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].ID === postId) {
+            return array[i];
+        }
+    }
+    return null; // Return null if no post found with the given id
+};
+
+
+
+function renderPosts(array) {
     var contentDiv = document.getElementById('content');
     contentDiv.innerHTML = ''; // Clear existing content
 
@@ -160,18 +186,18 @@ function renderPosts() {
     var htmlContent = `<div class="contentpost"><div class="posts">`;
 
     // Iterate through initialPosts and construct each post HTML
-    initialPosts.forEach(function(post) {
+    array.forEach(function(post) {
         htmlContent += `
             <div class="post">
-                <div class="user">Post created by ${post.username}</div>
+                <div class="user">Post created by ${post.Username}</div>
                 <div class="title">
-                    <h2>${post.title}</h2>
+                    <h2>${post.Title}</h2>
                 </div>
                 <div class="content">
-                    ${post.post}
+                    ${post.Post}
                 </div>
                 <div>
-                <a href="#" onclick="viewPost( ${post.id})"> view </a>
+                <a href="#" class="viewbtn" onclick="viewPost( ${post.ID}, initialPosts)"> view </a>
                 </div>
             </div> `;
     });
@@ -184,45 +210,10 @@ function renderPosts() {
 
     // Optionally, you can log the constructed HTML to verify
 }
-
-
-function renderLikedPosts() {
-    var contentDiv = document.getElementById('content');
-    contentDiv.innerHTML = ''; // Clear existing content
-
-    // Start building the HTML content
-    var htmlContent = `<div class="contentpost"><div class="posts">`;
-
-    // Iterate through initialPosts and construct each post HTML
-    likedPosts.forEach(function(post) {
-        htmlContent += `
-            <div class="post">
-                <div class="user">Post created by ${post.username}</div>
-                <div class="title">
-                    <h2>${post.title}</h2>
-                </div>
-                <div class="content">
-                    ${post.post}
-                </div>
-                <div>
-                <a href="#" onclick="viewPost( ${post.id})"> view </a>
-                </div>
-            </div> `;
-    });
-
-    // Complete the HTML content with closing div tags
-    htmlContent += `</div></div>`;
-
-    // Set the entire constructed HTML content to contentDiv.innerHTML
-    contentDiv.innerHTML = htmlContent;
-
-    // Optionally, you can log the constructed HTML to verify
-}
-
 
 
 window.onload = function() {
-    renderPosts();
+    renderPosts(initialPosts);
 };
 
 function submitComment(postId) {
@@ -242,7 +233,10 @@ function submitComment(postId) {
                 console.log('Comment added:', data);
                 // Reload the page to view the newly added comment
                 
-                AddToThePost(postId, formData.get('comment'));  
+                // AddToThePost(postId, formData.get('comment'));  
+
+                viewPost(postId, data.posts)
+
             } else {
                 console.error('Error adding comment:', data.error);
             }
@@ -259,7 +253,7 @@ function submitComment(postId) {
 
 function AddToThePost(postId, comment) {
 
-    var contentDiv = document.querySelector('.post');
+    var contentDiv = document.querySelector('.Post');
 
     // Create a new comment element
     var newComment = document.createElement('div');
@@ -276,9 +270,9 @@ function AddToThePost(postId, comment) {
 
     //add to initialPosts
     initialPosts.forEach(function(post) {
-        if (post.id === postId) {
+        if (post.ID === postId) {
             post.comments.push({
-                u_id: 'You',
+                U_ID: 'You',
                 comment: comment
             });
         }
@@ -313,10 +307,43 @@ function submitLike() {
     });
 }
 
+function submitCommentLike(commentid) {
+    const form = document.getElementById('CommentlikeForm'+commentid);
+    const formData = new FormData(form);
+
+
+    fetch('/addCommentlike', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Server response:', data);
+        // Handle the response accordingly
+        if (data.success) {
+            console.log('Like/dislike submitted successfully');
+            UpdatesCommentLikesCounter(commentid, data.likes, data.dislikes)
+            // Optionally, update UI or perform additional actions
+        } else {
+            console.error('Error submitting like/dislike:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+
+}
+
 
 
 function UpdatesLikesCounter(likes, dislikes){
     var CounterDiv = document.getElementById("counterForLikes")
+    CounterDiv.innerHTML = "Likes count: "+likes + " Dislikes count: "+ dislikes
+}
+
+
+function UpdatesCommentLikesCounter(commentid, likes, dislikes){
+    var CounterDiv = document.getElementById("counterForLikes"+commentid)
     CounterDiv.innerHTML = "Likes count: "+likes + " Dislikes count: "+ dislikes
 }
 
@@ -358,6 +385,49 @@ function GetIfUserLiked(pid) {
     });
 }
 
+
+function GetIfUserLikedComment(pid, cid) {
+    const requestData = {
+        pid: pid,
+        cid: cid
+    };
+
+    fetch('/diduserlikecomment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Server response:', data);
+        // Handle the response accordingly
+        if (data.success) {
+            console.log('User liked status retrieved successfully');
+            switch (data.userl) {
+                case 0:
+                    document.getElementById('dislike'+cid).checked = true; // Assuming 'disliked' is the ID of the dislike radio button
+                    break;
+                case 1:
+                    document.getElementById('like'+cid).checked = true; // Assuming 'liked' is the ID of the like radio button
+                    break;
+                default:
+                    console.error('Unknown user liked status:', data.userl);
+                    break;
+            }
+        } else {
+            console.error('Error retrieving user liked status:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+}
+
+
+
+
 function renderPostsByID(uid) {
     var contentDiv = document.getElementById('content');
     contentDiv.innerHTML = ''; // Clear existing content
@@ -368,18 +438,18 @@ function renderPostsByID(uid) {
     // Iterate through initialPosts and construct each post HTML
     initialPosts.forEach(function(post) {
         // Check if the post's u_id matches the given uid parameter
-        if (post.u_id === uid) {
+        if (post.U_ID === uid) {
             htmlContent += `
                 <div class="post">
-                    <div class="user">Post created by ${post.username}</div>
+                    <div class="user">Post created by ${post.Username}</div>
                     <div class="title">
-                        <h2>${post.title}</h2>
+                        <h2>${post.Title}</h2>
                     </div>
                     <div class="content">
-                        ${post.post}
+                        ${post.Post}
                     </div>
                     <div>
-                        <a href="#" onclick="viewPost(${post.id})">View</a>
+                        <a href="#" onclick="viewPost(${post.ID}, initialPosts)">View</a>
                     </div>
                 </div> `;
         }
