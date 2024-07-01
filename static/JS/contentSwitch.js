@@ -74,7 +74,14 @@ function changeContent(page) {
 }
 
 
+<<<<<<< HEAD
 function viewPost(pid, array) {
+=======
+
+
+
+function viewPost(pid) {
+>>>>>>> 6ac49131f2ddfdb30b783e39c3d671fcc7bcada6
     var contentDiv = document.getElementById('content');
     contentDiv.innerHTML = ''; // Clear existing content
 
