@@ -74,14 +74,7 @@ function changeContent(page) {
 }
 
 
-<<<<<<< HEAD
 function viewPost(pid, array) {
-=======
-
-
-
-function viewPost(pid) {
->>>>>>> 6ac49131f2ddfdb30b783e39c3d671fcc7bcada6
     var contentDiv = document.getElementById('content');
     contentDiv.innerHTML = ''; // Clear existing content
 
@@ -349,31 +342,9 @@ function UpdatesLikesCounter(likes, dislikes){
 }
 
 
-
-function submitLikeComment() {
-    const form = document.getElementById('likeCommentForm');
-    const formData = new FormData(form);
-
-
-    fetch('/addlikeComment', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Server response:', data);
-        // Handle the response accordingly
-        if (data.success) {
-            console.log('Like/dislike comment submitted successfully');
-            UpdatesLikesCounter(data.likes, data.dislikes)
-            // Optionally, update UI or perform additional actions
-        } else {
-            console.error('Error submitting comment like/dislike:', data.error);
-        }
-    })
-    .catch(error => {
-        console.error('Fetch error:', error);
-    });
+function UpdatesCommentLikesCounter(commentid, likes, dislikes){
+    var CounterDiv = document.getElementById("counterForLikes"+commentid)
+    CounterDiv.innerHTML = "Likes count: "+likes + " Dislikes count: "+ dislikes
 }
 
 function GetIfUserLiked(pid) {
