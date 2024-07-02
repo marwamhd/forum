@@ -67,7 +67,7 @@ function viewPost(pid, array) {
                 <label for="comment">Comment</label><br>
                 <textarea name="comment" id="comment" ${useridentification == 0 ? 'disabled' : ''}></textarea><br>
                 <input type="hidden" name="pid" value="${a.ID}">
-                <button type="button" onclick="submitComment(${a.ID})" ${useridentification == 0 ? 'disabled' : ''}>Add comment</button>
+                <button class="sameAsLog" type="button" onclick="submitComment(${a.ID})" ${useridentification == 0 ? 'disabled' : ''}>Add comment</button>
             </div>
         </form>
             </div>

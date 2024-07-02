@@ -4,13 +4,13 @@ window.onload = function() {
     footer.innerHTML = `        
     <form action="/" method="get">
         <label>
-            <input type="checkbox" name="cat" value="cat1"> cat1
+            <input type="checkbox" name="cat" value="cat1"> Annoucements
         </label><hr>
         <label>
-            <input type="checkbox" name="cat" value="cat2"> cat2
+            <input type="checkbox" name="cat" value="cat2"> Events
         </label><hr>
         <label>
-            <input type="checkbox" name="cat" value="cat3"> cat3
+            <input type="checkbox" name="cat" value="cat3"> Questions
         </label><hr>
         <button type="submit">Filter</button>
     </form>`
