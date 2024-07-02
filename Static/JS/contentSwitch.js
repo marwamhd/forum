@@ -31,7 +31,6 @@ function changeContent(page) {
                     <br>
                     <label for="us">Username</label>
                     <input type="text" name="us" id="us">
-                    <br>
                     <label for="password">password</label>
                     <input type="password" name="ps" id="ps"><br>
                     <button type="submit">SignUp</button> 

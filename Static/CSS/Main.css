@@ -7,6 +7,7 @@ body{
     width: 100px;
     height: 100px;
     border-radius: 50%;
+    margin-top: 10px;
 }
 
 a{
@@ -16,6 +17,8 @@ a{
     font-weight: bold;
     color: rgb(255, 120, 190);
 }
+
+
 
 .container{
     width: 90%;
@@ -57,6 +60,7 @@ header{
 .navButton{
     background-color: white;
     padding: 20px 40px;
+    margin-top: 10px;
 }
 
 main{
@@ -67,10 +71,8 @@ main{
 
 
 .formAuth {
-    min-height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    min-height: 20vh;
+    margin-top: 9% !important;
 }
 
 footer{
@@ -88,4 +90,165 @@ button{
     background-color: rgb(255, 255, 255);
     color: rgb(255, 120, 190);
     border: none;
+}
+
+
+.headerLeft{
+    display: flex;
+}
+
+
+
+.inputContainer {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.signin-form {
+    width: 300px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+.input-group input:focus {
+    border: 1px solid rgb(255, 120, 190);
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 5px;
+    background: rgb(255, 120, 190);
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background: rgb(255, 120, 190);
+    transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Adjusted CSS to match the provided HTML structure */
+.formAuth {
+    width: 300px; /* Adjust as needed */
+    margin: 0 auto; /* Centers the form */
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.formAuth label {
+    display: block;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.formAuth input[type="email"],
+.formAuth input[type="password"],
+.formAuth input[type="text"]  {
+    width: calc(100% - 22px); /* Adjust as needed */
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+.formAuth input[type="email"]:focus,
+.formAuth input[type="password"]:focus,
+.formAuth input[type="text"]:focus {
+    border: 1px solid rgb(255, 120, 190);
+    outline: none;
+}
+
+.formAuth button[type="submit"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 5px;
+    background: rgb(255, 120, 190);
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    margin-top: 1rem; /* Adjust as needed */
+}
+
+.formAuth button[type="submit"]:hover {
+    background: rgb(255, 120, 190);
+    transform: scale(1.05);
+}
+
+.formAuth p {
+    text-align: center;
+    margin-top: 1rem; /* Adjust as needed */
+}
+
+.formAuth a {
+    color: rgb(255, 120, 190);
+    text-decoration: none;
+}
+
+.formAuth a:hover {
+    text-decoration: underline;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

@@ -54,18 +54,20 @@
                 <div class="navButton">Login</div>
             </a>
             {{else}}
-            <a href="#" onclick="changeContent('profile')">
-                <div class="navButton">Profile</div>
-            </a>
-            <a href="/logout">
-                <div class="navButton">Logout</div>
-            </a>
-            <a href="#" onclick="changeContent('addpost')">
-                <div class="navButton">Create Post</div>
-            </a>          
-            <a href="#" onclick="changeContent('likedpost')">
-                <div class="navButton">Liked post</div>
-            </a>
+            <div class="headerLeft">
+                <a href="#" onclick="changeContent('profile')">
+                    <div class="navButton">Profile</div>
+                </a>
+                <a href="#" onclick="changeContent('addpost')">
+                    <div class="navButton">Create Post</div>
+                </a>          
+                <a href="#" onclick="changeContent('likedpost')">
+                    <div class="navButton">Liked post</div>
+                </a>
+                <a href="/logout">
+                    <div class="navButton">Logout</div>
+                </a>
+            </div>
             {{end}}
         </header>        
         <main id="content">
