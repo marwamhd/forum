@@ -48,6 +48,11 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 	category := r.Form["category"]
 	fmt.Printf("category: %v\n", len(category))
 
+	if len(category) == 0 {
+		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
+		return
+	}
+
 	title = sanitizeInput(title)
 	content = sanitizeInput(content)
 	cats := []int{}
