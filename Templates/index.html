@@ -1,76 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/normalize.css">
-    <link rel="stylesheet" href="static/CSS/main.css">
+    <link rel="stylesheet" href="Static/CSS/Main.css">
     <script>
         // Initialize initialPosts as an empty array
         let initialPosts = [];
         let likedPosts = [];
 
-        let useridentification = {{.U_id}};
-        
+        let useridentification = {
+            {.U_id
+            }
+        };
+
         // Populate initialPosts with data from Go template
-        {{range .FilteredPosts}}
+        {
+            {
+                range.FilteredPosts
+            }
+        }
         initialPosts.push({
-            ID: {{.ID}},
-            U_ID: {{.U_ID}},
+            ID: {
+                {.ID
+                }
+            },
+            U_ID: {
+                {.U_ID
+                }
+            },
             Title: "{{.Title}}",
             Post: "{{.Post}}",
             Username: "{{.Username}}",
-            Comments : [
-                {{range .Comments}}
+            Comments: [{
                 {
-                    ID: {{.ID}},
-                    U_ID: {{.U_ID}},
-                    P_ID: {{.P_ID}},
-                    Comment: "{{.Comment}}",
-                    Likes: {{.Likes}},
-                    Dislikes: {{.Dislikes}}
+                    range.Comments
+                }
+            } {
+                ID: {
+                    {.ID
+                    }
                 },
-                {{end}}
-            ],
+                U_ID: {
+                    {.U_ID
+                    }
+                },
+                P_ID: {
+                    {.P_ID
+                    }
+                },
+                Comment: "{{.Comment}}",
+                Likes: {
+                    {.Likes
+                    }
+                },
+                Dislikes: {
+                    {.Dislikes
+                    }
+                }
+            }, {
+                {
+                    end
+                }
+            }],
             Likes: "{{.Likes}}",
             Dislikes: "{{.Dislikes}}"
-        });
-        {{end}}
+        }); {
+            {
+                end
+            }
+        }
 
-        {{range .LikedPosts}}
+        {
+            {
+                range.LikedPosts
+            }
+        }
         likedPosts.push({
-            ID: {{.ID}},
-            U_ID: {{.U_ID}},
+            ID: {
+                {.ID
+                }
+            },
+            U_ID: {
+                {.U_ID
+                }
+            },
             Title: "{{.Title}}",
             Post: "{{.Post}}",
             Username: "{{.Username}}",
-            Comments : [
-                {{range .Comments}}
+            Comments: [{
                 {
-                    ID: {{.ID}},
-                    U_ID: {{.U_ID}},
-                    P_ID: {{.P_ID}},
-                    Comment: "{{.Comment}}",
-                    Likes: {{.Likes}},
-                    Dislikes: {{.Dislikes}}
+                    range.Comments
+                }
+            } {
+                ID: {
+                    {.ID
+                    }
                 },
-                {{end}}
-            ],
+                U_ID: {
+                    {.U_ID
+                    }
+                },
+                P_ID: {
+                    {.P_ID
+                    }
+                },
+                Comment: "{{.Comment}}",
+                Likes: {
+                    {.Likes
+                    }
+                },
+                Dislikes: {
+                    {.Dislikes
+                    }
+                }
+            }, {
+                {
+                    end
+                }
+            }],
             Likes: "{{.Likes}}",
             Dislikes: "{{.Dislikes}}"
-        });
-        {{end}}
-
-
+        }); {
+            {
+                end
+            }
+        }
     </script>
 
     <title>Document</title>
 </head>
+
 <body>
     <div class="container">
         <header>
-            <a href="#"  onclick="changeContent('home')">
-                <img class="star"  src="static/Image/marwastar.jpg" alt="">
+            <a href="#" onclick="changeContent('home')">
+                <img class="star" src="Static/Image/Star.jpg" alt="">
             </a>
             {{if eq .Authlevel 0}}
             <a href="#" onclick="changeContent('login')">
@@ -85,18 +152,18 @@
             </a>
             <a href="#" onclick="changeContent('addpost')">
                 <div class="navButton">Create Post</div>
-            </a>          
+            </a>
             <a href="#" onclick="changeContent('likedpost')">
                 <div class="navButton">Liked post</div>
             </a>
             {{end}}
-        </header>        
+        </header>
         <main id="content">
 
         </main>
 
         <footer>
-        <form action="/" method="get">
+            <form action="/" method="get">
                 <legend>Categories</legend>
                 <label>
                     <input type="checkbox" name="cat" value="cat1"> cat1
@@ -111,6 +178,14 @@
             </form>
         </footer>
     </div>
-    <script src="static/JS/contentSwitch.js" defer></script>
+    <script src="Static/JS/contentSwitch.js" defer></script>
+    <script src="Static/JS/viewPost.js" defer></script>
+    <script src="Static/JS/postUtils.js" defer></script>
+    <script src="Static/JS/renderPosts.js" defer></script>
+    <script src="Static/JS/submitActions.js" defer></script>
+    <script src="Static/JS/updateCounters.js" defer></script>
+    <script src="Static/JS/userStatus.js" defer></script>
+    <script src="Static/JS/init.js" defer></script>
 </body>
+
 </html>
