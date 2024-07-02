@@ -41,8 +41,8 @@ function viewPost(pid, array) {
         <div class="contentpost">
             <div class="posts">
                 <div class="post">
-                    <div class="user">Post created by ${a.Username}</div>
-                    <div class="catStr">Category: ${str}</div>
+                    <span class="user">Post created by ${a.Username}</span>
+                    <span class="catStr">Category: ${str}</span>
                     <div class="title">
                         <h2>${a.Title}</h2>
                     </div>

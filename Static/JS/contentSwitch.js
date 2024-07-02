@@ -60,9 +60,9 @@ function changeContent(page) {
             <form class="formAuth" action="/addpost" method="post">
                 <div>
                     <h3>Categories:</h3> 
-                    <input type="checkbox" name="category" value="1"> <span> Annoucements</span> <br>
-                    <input type="checkbox" name="category" value="2"><span> Events </span><br>
-                    <input type="checkbox" name="category" value="3"> <span>Questions</span> <br>
+                    <input type="checkbox" name="category" value="1"> <span class="pinkspan"> Annoucements</span> <br>
+                    <input type="checkbox" name="category" value="2"><span class="pinkspan"> Events </span><br>
+                    <input type="checkbox" name="category" value="3" > <span class="pinkspan">Questions</span> <br>
                     <br>
                     <label for="title">Title</label>
                     <input type="text" name="title" id="title">
