@@ -19,9 +19,13 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("us")
 	password := r.FormValue("ps")
 
-	email = sanitizeInput(email)
-	username = sanitizeInput(username)
-	password = sanitizeInput(password)
+	semail := sanitizeInput(email)
+	susername := sanitizeInput(username)
+
+	if semail != email || susername != username {
+		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
+		return
+	}
 
 	//we have to check for the each of the data and make sure all of them are valid, if not, throw an error
 
