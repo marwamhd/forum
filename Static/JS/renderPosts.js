@@ -52,7 +52,7 @@ function renderPostsByID(uid) {
                         ${post.Post}
                     </div>
                     <div>
-                        <a href="#" onclick="viewPost(${post.ID}, initialPosts)">View</a>
+                        <a class="viewbtn" href="#" onclick="viewPost(${post.ID}, initialPosts)">View</a>
                     </div>
                 </div> `;
         }
