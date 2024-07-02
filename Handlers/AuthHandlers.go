@@ -38,7 +38,13 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	use.DataBase.InsertUser(email, username, password)
+	hashed, err := use.HashPassword(password)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		return
+	}
+
+	use.DataBase.InsertUser(email, username, hashed)
 	LoginHandler(w, r)
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)

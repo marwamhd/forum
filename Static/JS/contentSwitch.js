@@ -33,7 +33,7 @@ function changeContent(page) {
                     <input type="text" name="us" id="us">
                     <br>
                     <label for="password">password</label>
-                    <input type="ps" name="ps" id="ps"><br>
+                    <input type="password" name="ps" id="ps"><br>
                     <button type="submit">SignUp</button> 
                     <p>You have an account? click <a href="#" onclick="changeContent('login')"> here</a> to login!
                     </p>
@@ -49,7 +49,7 @@ function changeContent(page) {
                     <input type="email" name="em" id="em">
                     <br>
                     <label for="password">password</label>
-                    <input type="ps" name="ps" id="ps"><br>
+                    <input type="password" name="ps" id="ps"><br>
                     <button type="submit">Login</button> 
                     <p>don't have an account? click <a href="#" onclick="changeContent('signup')"> here!</a>
                     </p>
