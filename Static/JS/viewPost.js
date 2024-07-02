@@ -5,6 +5,36 @@ function viewPost(pid, array) {
     GetIfUserLiked(pid)
 
     let a = getPostByIdAndArray(array, pid);
+    let str = ""
+    let str1 = ""
+    let str2 = ""
+    let str3 = ""
+
+    if (a.Cat1 == 1) {
+        str1 = "Annoucements"
+    }
+    if (a.Cat2 == 1) {
+        str2 = "Events"
+    }
+    if (a.Cat3 == 1) {
+        str3 = "Questions"
+    }
+    if (str1 != "" && str2 != "" && str3 != "") {
+        str = str1 + ", " + str2 + " and " +str3
+    } else if (str1 != "" && str2 != "") {
+        str = str1 + " and " + str2
+    } else if (str1 != "" && str3 != "") {
+        str = str1 + " and " + str3
+    } else if (str2 != "" && str3 != "") {
+        str = str2 + " and " + str3
+    } else if (str1 != ""){
+        str = str1
+    }else if (str2 != ""){
+        str = str2
+    }else if (str3 != ""){
+        str = str3
+    }
+
 
     // Start building the HTML content for the single post view
     var htmlContent = `
@@ -12,6 +42,7 @@ function viewPost(pid, array) {
             <div class="posts">
                 <div class="post">
                     <div class="user">Post created by ${a.Username}</div>
+                    <div class="catStr">Category: ${str}</div>
                     <div class="title">
                         <h2>${a.Title}</h2>
                     </div>
@@ -64,8 +95,8 @@ function viewPost(pid, array) {
             <div>
        <form id="commentForm-${a.ID}">
             <div>
-                <label for="comment">Comment</label><br>
-                <textarea name="comment" id="comment" ${useridentification == 0 ? 'disabled' : ''}></textarea><br>
+                <label for="comment" class="commentlab">Comment</label><br>
+                <textarea name="comment" id="comment" class="fixed-size-textarea" maxlength="500" ${useridentification == 0 ? 'disabled' : ''}></textarea><br>
                 <input type="hidden" name="pid" value="${a.ID}">
                 <button class="sameAsLog" type="button" onclick="submitComment(${a.ID})" ${useridentification == 0 ? 'disabled' : ''}>Add comment</button>
             </div>

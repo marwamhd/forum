@@ -37,7 +37,7 @@ function changeContent(page) {
                     </p>
                 </div>
             </form>`;
-            footer.innerHTML="";
+            footer.innerHTML = "";
             break;
         case 'login':
             contentDiv.innerHTML = `
@@ -53,7 +53,7 @@ function changeContent(page) {
                     </p>
                 </div>
             </form>`;
-            footer.innerHTML="";
+            footer.innerHTML = "";
             break;
         case 'addpost':
             contentDiv.innerHTML = `
@@ -68,21 +68,21 @@ function changeContent(page) {
                     <input type="text" name="title" id="title">
                     <br>
                     <label for="post">Post</label>
-                    <textarea name="post" id="post"></textarea><br>
+                    <textarea name="post" id="post" class="postText"></textarea><br>
                     <button type="submit">Add Post</button> 
                 </div>
             </form>`;
-            footer.innerHTML="";
+            footer.innerHTML = "";
             break;
 
         case 'profile':
             renderPostsByID(useridentification)
-            footer.innerHTML="";
+            footer.innerHTML = "";
             break;
         case 'likedpost':
             GetLikedPosts();
             contentDiv.innerHTML += `</div></div>`;
-            footer.innerHTML="";
+            footer.innerHTML = "";
             break;
 
         default:
