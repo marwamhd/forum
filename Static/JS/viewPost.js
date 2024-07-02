@@ -20,15 +20,16 @@ function viewPost(pid, array) {
                     </div>
                     <form id="likeForm" action="/addlike">
                         <input onclick="submitLike()" type="radio" id="like" name="like" value="1" ${useridentification == 0 ? 'disabled' : ''}>
-                        <label for="like">Like</label><br>
+                        <label for="like">Like</label>
                         <input onclick="submitLike()" type="radio" id="dislike" name="like" value="0" ${useridentification == 0 ? 'disabled' : ''}>
-                        <label for="dislike">Dislike</label><br>
+                        <label for="dislike">Dislike</label>
                         <input onclick="submitLike()" type="radio" id="prefernottosay" name="like" value="2" ${useridentification == 0 ? 'disabled' : ''}>
                         <label for="prefernottosay">Prefernottosay</label>
                          <input type="hidden" name="pid" value="${a.ID}">
                     </form>
 
-                    <div id="counterForLikes" > Likes count: ${a.Likes} Dislikes count: ${a.Dislikes} </div>
+                    <div class="endofpost" id="counterForLikes" > Likes count: ${a.Likes} Dislikes count: ${a.Dislikes} </div>
+                    <hr>
 
                 `;
 
@@ -44,16 +45,17 @@ function viewPost(pid, array) {
                 </div>
                     <form id="CommentlikeForm${comment.ID}" action="/addCommentlike">
                         <input onclick="submitCommentLike(${comment.ID})" type="radio" id="like${comment.ID}" name="like${comment.ID}" value="1"${useridentification == 0 ? 'disabled' : ''}>
-                        <label for="like${comment.ID}">Like</label><br>
+                        <label for="like${comment.ID}">Like</label>
                         <input onclick="submitCommentLike(${comment.ID})" type="radio" id="dislike${comment.ID}" name="like${comment.ID}" value="0"${useridentification == 0 ? 'disabled' : ''}>
-                        <label for="dislike${comment.ID}">Dislike</label><br>
+                        <label for="dislike${comment.ID}">Dislike</label>
                         <input onclick="submitCommentLike(${comment.ID})" type="radio" id="prefernottosay${comment.ID}" name="like${comment.ID}" value="2"${useridentification == 0 ? 'disabled' : ''}>
                         <label for="prefernottosay${comment.ID}">Prefernottosay</label>
                         <input type="hidden" name="cid" value="${comment.ID}">
                         <input type="hidden" name="pid" value="${a.ID}">
                     </form>
 
-                    <div id="counterForLikes${comment.ID}" > Likes count: ${comment.Likes} Dislikes count: ${comment.Dislikes} </div>
+                    <div  class="endofpost" id="counterForLikes${comment.ID}" > Likes count: ${comment.Likes} Dislikes count: ${comment.Dislikes} </div>
+                    <hr>
             </div>`;
     });
 
