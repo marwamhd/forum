@@ -10,13 +10,13 @@ function changeContent(page) {
             footer.innerHTML = `        
             <form action="/" method="get">
                 <label>
-                    <input type="checkbox" name="cat" value="cat1"> cat1
+                    <input type="checkbox" name="cat" value="cat1"> Annoucements
                 </label><hr>
                 <label>
-                    <input type="checkbox" name="cat" value="cat2"> cat2
+                    <input type="checkbox" name="cat" value="cat2"> Events
                 </label><hr>
                 <label>
-                    <input type="checkbox" name="cat" value="cat3"> cat3
+                    <input type="checkbox" name="cat" value="cat3"> Questions
                 </label><hr>
                 <button type="submit">Filter</button>
             </form>`
@@ -60,9 +60,9 @@ function changeContent(page) {
             <form class="formAuth" action="/addpost" method="post">
                 <div>
                     Categories: <br>
-                    <input type="checkbox" name="category" value="1">Category 1 <br>
-                    <input type="checkbox" name="category" value="2">Category 2 <br>
-                    <input type="checkbox" name="category" value="3">Category 3 <br>
+                    <input type="checkbox" name="category" value="1">Annoucements <br>
+                    <input type="checkbox" name="category" value="2">Events <br>
+                    <input type="checkbox" name="category" value="3">Questions <br>
                     <br>
                     <label for="title">Title</label>
                     <input type="text" name="title" id="title">
