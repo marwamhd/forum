@@ -2,6 +2,7 @@ package Handlers
 
 import (
 	"fmt"
+	use "forum/Database"
 	"log"
 	"net/http"
 	"strings"

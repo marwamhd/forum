@@ -3,7 +3,7 @@ package Handlers
 import (
 	"encoding/json"
 	"fmt"
-	database "forum/Database"
+	use "forum/Database"
 	"html"
 	"log"
 	"net/http"
@@ -180,7 +180,7 @@ func AddLikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("comment like added.")
 
-	likes, dislikes, err := database.DataBase.CommentLikesDislikesTotal(postID, commentID)
+	likes, dislikes, err := use.DataBase.CommentLikesDislikesTotal(postID, commentID)
 
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
@@ -270,7 +270,7 @@ func DidUserLikeComment(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("pid: %v\n", postID)
 
-	likedwhat, err := database.DataBase.WhatUserLikedComment(author, postID, commentID)
+	likedwhat, err := use.DataBase.WhatUserLikedComment(author, postID, commentID)
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
 		return
@@ -294,7 +294,7 @@ func sanitizeInput(input string) string {
 
 	input = removeHTMLTags(input)
 	input = html.EscapeString(input)
-	input = strings.ReplaceAll(input, "\n", "<br>")
+	input = strings.ReplaceAll(input, "\r\n", "<br>")
 	input = strings.TrimSpace(input)
 	return input
 }

@@ -2,6 +2,7 @@ package Handlers
 
 import (
 	"fmt"
+	use "forum/Database"
 	"log"
 	"net/http"
 	"strconv"
@@ -46,6 +47,9 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 	content := r.FormValue("post")
 	category := r.Form["category"]
 	fmt.Printf("category: %v\n", len(category))
+
+	title = sanitizeInput(title)
+	content = sanitizeInput(content)
 	cats := []int{}
 
 	for i := 1; i <= 4; i++ {

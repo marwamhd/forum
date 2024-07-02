@@ -3,14 +3,12 @@ package main
 import (
 	"fmt"
 	"forum/Handlers"
-	"forum/Helpers"
 	"log"
 	"net/http"
 )
 
 func main() {
 	fmt.Println("the server is starting at https://localhost:5050/")
-	Helpers.OpenBrowser("https://localhost:5050/")
 	StartServer()
 }
 

@@ -1,5 +1,9 @@
 package Handlers
 
+import (
+	use "forum/Database"
+)
+
 type content struct {
 	Authlevel     int
 	U_id          int
