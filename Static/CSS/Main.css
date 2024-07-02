@@ -109,6 +109,10 @@ footer{
     color: rgb(233, 69, 154);
 }
 
+input[type="radio"],input[type="checkbox"] {
+    accent-color: rgb(233, 69, 154);
+}
+
 
 button {
     background-color: rgb(255, 255, 255);
@@ -131,7 +135,7 @@ button {
    
 }
 
-.headerLeft a .navButton{
+ .navButton{
     border: 3px dashed rgb(255 210 233);
     margin-bottom: 10px;
     border-radius: 10px;
