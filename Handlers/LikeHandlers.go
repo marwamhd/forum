@@ -3,7 +3,6 @@ package Handlers
 import (
 	"encoding/json"
 	"fmt"
-	database "forum/Database"
 	use "forum/Database"
 	"log"
 	"net/http"
@@ -86,7 +85,7 @@ func AddLikePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("like added.")
 
-	likes, dislikes, err := database.DataBase.LikesDislikesTotal(postID)
+	likes, dislikes, err := use.DataBase.LikesDislikesTotal(postID)
 
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
@@ -176,7 +175,7 @@ func DidUserLike(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("pid: %v\n", postID)
 
-	likedwhat, err := database.DataBase.WhatUserLiked(author, postID)
+	likedwhat, err := use.DataBase.WhatUserLiked(author, postID)
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
 		return
@@ -187,6 +186,69 @@ func DidUserLike(w http.ResponseWriter, r *http.Request) {
 		Success: true,
 		Message: "like added successfully",
 		Userl:   likedwhat,
+	}
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "Failed to encode JSON", http.StatusInternalServerError)
+		return
+	}
+}
+
+func LikedPost(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("post")
+	if r.Method != "POST" {
+		ErrorHandler(w, r, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
+		return
+	}
+
+	cook, cookieFound := r.Cookie("session_id")
+	if cookieFound != nil {
+		log.Println(cookieFound, "3231")
+		OverWriteCookieValue(w, r, uuid.Nil)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	fmt.Println("sess")
+
+	fmt.Println("12278")
+
+	if cook.Value == "" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	fmt.Println("1212284")
+
+	activeSession, errForSes := use.DataBase.SessionExists(cook.Value)
+
+	if !activeSession || errForSes != nil {
+		OverWriteCookieValue(w, r, uuid.Nil)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	fmt.Println("ass")
+
+	fmt.Println("2121293a")
+
+	author, err := use.GetAuthor(cook.Value)
+	if err != nil {
+		log.Println("error in getting author", err)
+		return
+	}
+
+	likedPost, errForLiked := use.DataBase.WhatUserLikedPosts(author)
+	if errForLiked != nil {
+		log.Println("error in liked posts", errForLiked)
+		return
+	}
+
+	// Create a JSON response struct
+	response := CommentJsons{
+		Success: true,
+		Message: "posts successfully retrieved",
+		Posts:   likedPost,
 	}
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(response); err != nil {
