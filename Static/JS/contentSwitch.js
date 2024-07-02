@@ -49,7 +49,7 @@ function changeContent(page) {
                     <label for="password">password</label>
                     <input type="password" name="ps" id="ps"><br>
                     <button type="submit">Login</button> 
-                    <p>don't have an account? click <a href="#" onclick="changeContent('signup')"> here!</a>
+                    <p>Don't have an account? click <a href="#" onclick="changeContent('signup')"> here!</a>
                     </p>
                 </div>
             </form>`;
