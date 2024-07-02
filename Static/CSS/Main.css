@@ -1,6 +1,11 @@
+html{
+    background-image: url("https://localhost:5050/Static/Image/background.jpg") ;
+
+}
+
 body{
     /* background-color: #faeeef; */
-    background-image: url("https://i.pinimg.com/564x/9f/2a/48/9f2a489d2a8f8f487417dd721f1b0b49.jpg") ;
+    background-color: rgba(255, 255, 255, 0.616);
     color: rgb(0, 0, 0);
     font-family: monospace;
 }
