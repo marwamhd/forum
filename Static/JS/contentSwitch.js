@@ -1,11 +1,26 @@
 function changeContent(page) {
     var contentDiv = document.getElementById('content');
+    var footer = document.getElementById('cats')
 
     switch (page) {
         case 'home':
             location.reload();
             renderPosts(initialPosts);
             contentDiv.innerHTML += `</div></div>`;
+            footer.innerHTML = `        
+            <form action="/" method="get">
+                <legend>Categories</legend>
+                <label>
+                    <input type="checkbox" name="cat" value="cat1"> cat1
+                </label><br>
+                <label>
+                    <input type="checkbox" name="cat" value="cat2"> cat2
+                </label><br>
+                <label>
+                    <input type="checkbox" name="cat" value="cat3"> cat3
+                </label><br>
+                <button type="submit">Filter</button>
+            </form>`
             break;
         case 'signup':
             contentDiv.innerHTML = `
@@ -24,6 +39,7 @@ function changeContent(page) {
                     </p>
                 </div>
             </form>`;
+            footer.innerHTML="";
             break;
         case 'login':
             contentDiv.innerHTML = `
@@ -39,6 +55,7 @@ function changeContent(page) {
                     </p>
                 </div>
             </form>`;
+            footer.innerHTML="";
             break;
         case 'addpost':
             contentDiv.innerHTML = `
@@ -57,14 +74,17 @@ function changeContent(page) {
                     <button type="submit">Add Post</button> 
                 </div>
             </form>`;
+            footer.innerHTML="";
             break;
 
         case 'profile':
             renderPostsByID(useridentification)
+            footer.innerHTML="";
             break;
         case 'likedpost':
-            renderPosts(likedPosts);
+            GetLikedPosts();
             contentDiv.innerHTML += `</div></div>`;
+            footer.innerHTML="";
             break;
 
         default:

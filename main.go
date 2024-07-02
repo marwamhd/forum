@@ -23,6 +23,7 @@ func StartServer() {
 	http.HandleFunc("/diduserlike", Handlers.DidUserLike)
 	http.HandleFunc("/addCommentlike", Handlers.AddLikeCommentHandler)
 	http.HandleFunc("/diduserlikecomment", Handlers.DidUserLikeComment)
+	http.HandleFunc("/likedpost", Handlers.LikedPost)
 
 	http.Handle("/Static/", http.StripPrefix("/Static/", http.FileServer(http.Dir("Static"))))
 	err := http.ListenAndServeTLS("0.0.0.0:5050", "Security/server.pem", "Security/server.key", nil)

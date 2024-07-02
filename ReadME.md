@@ -30,7 +30,6 @@ This project is a web forum application built with Go, JS, and SQLite. It enable
   - Filter posts by categories.
   - Filter by posts created by the user.
   - Filter by posts liked by the user.
-(we need to see this part more)
 
 
 ## Setup and Installation
@@ -51,7 +50,6 @@ This project is a web forum application built with Go, JS, and SQLite. It enable
 
 3. **Access the application:**
     Open your browser and go to `http://localhost:5050`.
-    it will open automatically
 
 ## Database
 
@@ -117,8 +115,6 @@ Enabling HTTPS
 - `bcrypt`
 - `UUID`
 
-## Frontend Libraries
-(we need to see this part)
 
 ## Learning Outcomes
 

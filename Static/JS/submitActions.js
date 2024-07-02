@@ -83,3 +83,31 @@ function submitCommentLike(commentid) {
         });
 
 }
+
+
+function GetLikedPosts() {
+    fetch('/likedpost', {
+            method: 'POST',
+            body: ""
+        })
+        .then(response => response.text())
+        .then(text => {
+            console.log('Server response:', text);
+            try {
+                const data = JSON.parse(text);
+                if (data.success) {
+                    console.log('Comment added:', data);
+                    // Reload the page to view the newly added comment
+                    renderPosts(data.posts);
+
+                } else {
+                    console.error('Error adding comment:', data.error);
+                }
+            } catch (error) {
+                console.error('JSON parsing error:', error);
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+}

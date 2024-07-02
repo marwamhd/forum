@@ -19,18 +19,12 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("us")
 	password := r.FormValue("ps")
 
-	fmt.Printf("email: %v\n", email)
-	fmt.Printf("username: %v\n", username)
-	fmt.Printf("password: %v\n", password)
-
 	//we have to check for the each of the data and make sure all of them are valid, if not, throw an error
 
 	if email == "" || username == "" || password == "" {
 		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
-
-	//we check if the email is unique
 
 	exists, err := use.DataBase.EmailExists(email)
 	if err != nil {
