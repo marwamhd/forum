@@ -275,6 +275,13 @@ button:hover {
     text-decoration: underline;
 }
 
+span{
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgb(233, 69, 154);
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;

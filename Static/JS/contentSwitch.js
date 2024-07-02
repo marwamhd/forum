@@ -59,10 +59,10 @@ function changeContent(page) {
             contentDiv.innerHTML = `
             <form class="formAuth" action="/addpost" method="post">
                 <div>
-                    Categories: <br>
-                    <input type="checkbox" name="category" value="1">Annoucements <br>
-                    <input type="checkbox" name="category" value="2">Events <br>
-                    <input type="checkbox" name="category" value="3">Questions <br>
+                    <h3>Categories:</h3> 
+                    <input type="checkbox" name="category" value="1"> <span> Annoucements</span> <br>
+                    <input type="checkbox" name="category" value="2"><span> Events </span><br>
+                    <input type="checkbox" name="category" value="3"> <span>Questions</span> <br>
                     <br>
                     <label for="title">Title</label>
                     <input type="text" name="title" id="title">
