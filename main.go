@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	fmt.Println("the server is starting at https://localhost:1010/")
+	fmt.Println("the server is starting at https://localhost:5050/")
 	StartServer()
 }
 
