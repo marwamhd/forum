@@ -6,7 +6,7 @@ LABEL Authors="yjawad, malkhuza, aabdulhu, sayedalawi, yrahma"
 LABEL Description="Container"
 LABEL Version="Latest"
 
-EXPOSE 1010
+EXPOSE 5050
 
 WORKDIR /app
 
