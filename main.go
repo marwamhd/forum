@@ -29,6 +29,6 @@ func StartServer() {
 	// err := http.ListenAndServeTLS("0.0.0.0:5050", "Security/server.pem", "Security/server.key", nil)
 	// log.Fatal(err)
 
-	err := http.ListenAndServe("localhost:9090", nil)
+	err := http.ListenAndServe("localhost:1010", nil)
 	log.Fatal(err)
 }
