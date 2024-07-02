@@ -45,7 +45,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 
 	//is this cookie actually in the db? if yes, we enter as logged in, if not, we enter as not logged in and delete the cookie
 
-	posts, errForPost := use.DataBase.GetPosts()
+	posts, errForPost := use.DataBase.GetFilteredPosts("select * from posts")
 	if errForPost != nil {
 		log.Println("error in getting posts", errForPost)
 		return

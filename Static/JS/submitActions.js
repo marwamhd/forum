@@ -3,6 +3,12 @@ function submitLike() {
     const formData = new FormData(form);
 
 
+    if (useridentification==0){
+        alert("not authorized")
+        return false;
+    }
+
+
     fetch('/addlike', {
             method: 'POST',
             body: formData
@@ -27,6 +33,12 @@ function submitLike() {
 function submitComment(postId) {
     const form = document.getElementById(`commentForm-${postId}`);
     const formData = new FormData(form);
+
+
+    if (useridentification==0){
+        alert("not authorized")
+        return false;
+    }
 
     fetch('/addcomment', {
             method: 'POST',
@@ -60,6 +72,12 @@ function submitComment(postId) {
 function submitCommentLike(commentid) {
     const form = document.getElementById('CommentlikeForm' + commentid);
     const formData = new FormData(form);
+
+
+    if (useridentification==0){
+        alert("not authorized")
+        return false;
+    }
 
 
     fetch('/addCommentlike', {

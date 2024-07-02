@@ -25,6 +25,7 @@ type Comment struct {
 	ID       int
 	U_ID     int
 	P_ID     int
+	Username string
 	Comment  string
 	Likes    int
 	Dislikes int

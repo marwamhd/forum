@@ -28,31 +28,8 @@
                     P_ID: {{.P_ID}},
                     Comment: "{{.Comment}}",
                     Likes: {{.Likes}},
-                    Dislikes: {{.Dislikes}}
-                },
-                {{end}}
-            ],
-            Likes: "{{.Likes}}",
-            Dislikes: "{{.Dislikes}}"
-        });
-        {{end}}
-
-        {{range .LikedPosts}}
-        likedPosts.push({
-            ID: {{.ID}},
-            U_ID: {{.U_ID}},
-            Title: "{{.Title}}",
-            Post: "{{.Post}}",
-            Username: "{{.Username}}",
-            Comments : [
-                {{range .Comments}}
-                {
-                    ID: {{.ID}},
-                    U_ID: {{.U_ID}},
-                    P_ID: {{.P_ID}},
-                    Comment: "{{.Comment}}",
-                    Likes: {{.Likes}},
-                    Dislikes: {{.Dislikes}}
+                    Dislikes: {{.Dislikes}},
+                    Username: "{{.Username}}"
                 },
                 {{end}}
             ],

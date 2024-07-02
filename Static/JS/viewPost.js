@@ -19,11 +19,11 @@ function viewPost(pid, array) {
                         ${a.Post}
                     </div>
                     <form id="likeForm" action="/addlike">
-                        <input onclick="submitLike()" type="radio" id="like" name="like" value="1">
+                        <input onclick="submitLike()" type="radio" id="like" name="like" value="1" ${useridentification == 0 ? 'disabled' : ''}>
                         <label for="like">Like</label><br>
-                        <input onclick="submitLike()" type="radio" id="dislike" name="like" value="0">
+                        <input onclick="submitLike()" type="radio" id="dislike" name="like" value="0" ${useridentification == 0 ? 'disabled' : ''}>
                         <label for="dislike">Dislike</label><br>
-                        <input onclick="submitLike()" type="radio" id="prefernottosay" name="like" value="2">
+                        <input onclick="submitLike()" type="radio" id="prefernottosay" name="like" value="2" ${useridentification == 0 ? 'disabled' : ''}>
                         <label for="prefernottosay">Prefernottosay</label>
                          <input type="hidden" name="pid" value="${a.ID}">
                     </form>
@@ -38,16 +38,16 @@ function viewPost(pid, array) {
         console.log(comment)
         htmlContent += `
             <div class="comment">
-                <div class="user">Comment by ${comment.U_ID}</div>
+                <div class="user">Comment by ${comment.Username}</div>
                 <div class="content">
                     ${comment.Comment}
                 </div>
                     <form id="CommentlikeForm${comment.ID}" action="/addCommentlike">
-                        <input onclick="submitCommentLike(${comment.ID})" type="radio" id="like${comment.ID}" name="like${comment.ID}" value="1">
+                        <input onclick="submitCommentLike(${comment.ID})" type="radio" id="like${comment.ID}" name="like${comment.ID}" value="1"${useridentification == 0 ? 'disabled' : ''}>
                         <label for="like${comment.ID}">Like</label><br>
-                        <input onclick="submitCommentLike(${comment.ID})" type="radio" id="dislike${comment.ID}" name="like${comment.ID}" value="0">
+                        <input onclick="submitCommentLike(${comment.ID})" type="radio" id="dislike${comment.ID}" name="like${comment.ID}" value="0"${useridentification == 0 ? 'disabled' : ''}>
                         <label for="dislike${comment.ID}">Dislike</label><br>
-                        <input onclick="submitCommentLike(${comment.ID})" type="radio" id="prefernottosay${comment.ID}" name="like${comment.ID}" value="2">
+                        <input onclick="submitCommentLike(${comment.ID})" type="radio" id="prefernottosay${comment.ID}" name="like${comment.ID}" value="2"${useridentification == 0 ? 'disabled' : ''}>
                         <label for="prefernottosay${comment.ID}">Prefernottosay</label>
                         <input type="hidden" name="cid" value="${comment.ID}">
                         <input type="hidden" name="pid" value="${a.ID}">
@@ -63,9 +63,9 @@ function viewPost(pid, array) {
        <form id="commentForm-${a.ID}">
             <div>
                 <label for="comment">Comment</label><br>
-                <textarea name="comment" id="comment"></textarea><br>
+                <textarea name="comment" id="comment" ${useridentification == 0 ? 'disabled' : ''}></textarea><br>
                 <input type="hidden" name="pid" value="${a.ID}">
-                <button type="button" onclick="submitComment(${a.ID})">Add comment</button>
+                <button type="button" onclick="submitComment(${a.ID})" ${useridentification == 0 ? 'disabled' : ''}>Add comment</button>
             </div>
         </form>
             </div>
