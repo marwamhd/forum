@@ -64,8 +64,8 @@ function viewPost(pid, array) {
             <div>
        <form id="commentForm-${a.ID}">
             <div>
-                <label for="comment">Comment</label><br>
-                <textarea name="comment" id="comment" ${useridentification == 0 ? 'disabled' : ''}></textarea><br>
+                <label for="comment" class="commentlab">Comment</label><br>
+                <textarea name="comment" id="comment" class="fixed-size-textarea" maxlength="500" ${useridentification == 0 ? 'disabled' : ''}></textarea><br>
                 <input type="hidden" name="pid" value="${a.ID}">
                 <button type="button" onclick="submitComment(${a.ID})" ${useridentification == 0 ? 'disabled' : ''}>Add comment</button>
             </div>
