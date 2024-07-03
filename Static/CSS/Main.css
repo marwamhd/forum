@@ -1,11 +1,10 @@
 html {
-    background-image: url("https://localhost:5050/Static/Image/Star.jpg");
-    background-size: 20px;
+    background-image: url("https://localhost:5050/Static/Image/blurstar.png");
+    background-size: 30px;
 }
 
 body {
     /* background-color: #faeeef; */
-    background-color: #faeeefc7;
     color: rgb(0, 0, 0);
     font-family: monospace;
     font-size: 15px;
@@ -99,15 +98,6 @@ main {
     margin-top: 9% !important;
 }
 
-footer {
-    position: fixed;
-    bottom: 2%;
-    left: 5;
-    text-decoration: none;
-    font-size: 1.15rem;
-    font-weight: bold;
-    color: rgb(233, 69, 154);
-}
 
 input[type="radio"],
 input[type="checkbox"] {
@@ -361,6 +351,12 @@ button:hover {
     transform: translate(0, -11px) rotate(45deg);
 }
 
+#CatForm label{
+    font-size: 15px;
+    color: rgb(233, 69, 154);
+    font-weight: bold;
+}
+
 .additional-buttons {
     display: none;
     position: absolute;
@@ -517,3 +513,4 @@ button:hover {
     }
 
 }
+

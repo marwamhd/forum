@@ -30,16 +30,16 @@ func OverWriteCookieValue(w http.ResponseWriter, r *http.Request, sid uuid.UUID)
 }
 
 // Remove HTML tags, Convert \n to <br> tags, Replace special HTML characters with their escaped equivalents
-func sanitizeInput(input string) string {
+func SanitizeInput(input string) string {
 
-	input = removeHTMLTags(input)
+	input = RemoveHTMLTags(input)
 	input = html.EscapeString(input)
 	input = strings.ReplaceAll(input, "\r\n", "<br>")
 	input = strings.TrimSpace(input)
 	return input
 }
 
-func removeHTMLTags(input string) string {
+func RemoveHTMLTags(input string) string {
 	htmlTagRegex := regexp.MustCompile(`<[^>]*>`)
 	sanitized := htmlTagRegex.ReplaceAllString(input, "")
 
