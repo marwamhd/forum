@@ -27,6 +27,5 @@ func StartServer() {
 
 	http.Handle("/Static/", http.StripPrefix("/Static/", http.FileServer(http.Dir("Static"))))
 	err := http.ListenAndServeTLS("0.0.0.0:5050", "Security/server.pem", "Security/server.key", nil)
-	log.Fatal(err)
-
+	log.Fatal("Error:", err)
 }

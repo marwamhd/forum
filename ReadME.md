@@ -42,14 +42,14 @@ This project is a web forum application built with Go, JS, and SQLite. It enable
 ### Installation
 
 1. **Clone the repository:**
-    git clone https://learn.reboot01.com/git/malkhuza/forum.git
-    cd forum
+  - git clone https://learn.reboot01.com/git/malkhuza/forum.git
+  - cd forum
 
 2. **Build the Docker image and Run the Docker container:**
-    bash run.sh
+  - bash dockerRun.sh
 
 3. **Access the application:**
-    Open your browser and go to `http://localhost:5050`.
+  - Open your browser and go to `http://localhost:5050`.
 
 ## Database
 

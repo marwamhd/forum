@@ -170,7 +170,6 @@ func AddLikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DidUserLikeComment(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("post")
 	if r.Method != "POST" {
 		ErrorHandler(w, r, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed))
 		return
