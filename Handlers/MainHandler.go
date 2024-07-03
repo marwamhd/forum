@@ -12,10 +12,13 @@ import (
 )
 
 func MainHandler(w http.ResponseWriter, r *http.Request) {
+
 	if r.URL.Path != "/" {
 		ErrorHandler(w, r, http.StatusNotFound, http.StatusText(http.StatusNotFound))
 		return
 	}
+
+	fmt.Println("Path:", r.URL.RawFragment)
 
 	cook, cookieFound := r.Cookie("session_id")
 	authlevel := 1
@@ -70,8 +73,11 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	MainHtml, _ := template.ParseFiles("Templates/index.html")
-
+	MainHtml, eror := template.ParseFiles("Templates/index.html")
+	if eror != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
 	err := MainHtml.Execute(w, content{authlevel, author, posts, filteredPosts, likedPost})
 	if err != nil {
 		log.Fatal(err)

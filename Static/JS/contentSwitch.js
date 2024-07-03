@@ -26,12 +26,12 @@ function changeContent(page) {
             <form class="formAuth" action="/signup" method="post">
                 <div>
                     <label for="em">Email</label>
-                    <input type="email" name="em" id="em">
+                    <input type="email" name="em" id="em" required>
                     <br>
                     <label for="us">Username</label>
-                    <input type="text" name="us" id="us">
+                    <input type="text" name="us" id="us" required>
                     <label for="password">password</label>
-                    <input type="password" name="ps" id="ps"><br>
+                    <input type="password" name="ps" id="ps" required><br>
                     <button type="submit">SignUp</button> 
                     <p>You have an account? click <a href="#" onclick="changeContent('login')"> here</a> to login!
                     </p>
@@ -44,10 +44,10 @@ function changeContent(page) {
             <form class="formAuth" action="/login" method="post">
                 <div>
                     <label for="em">Email</label>
-                    <input type="email" name="em" id="em">
+                    <input type="email" name="em" id="em" required>
                     <br>
                     <label for="password">password</label>
-                    <input type="password" name="ps" id="ps"><br>
+                    <input type="password" name="ps" id="ps" required><br>
                     <button type="submit">Login</button> 
                     <p>Don't have an account? click <a href="#" onclick="changeContent('signup')"> here!</a>
                     </p>
@@ -57,7 +57,7 @@ function changeContent(page) {
             break;
         case 'addpost':
             contentDiv.innerHTML = `
-            <form class="formAuth" action="/addpost" method="post">
+            <form class="formAuth" action="/addpost" method="post" required>
                 <div>
                     <h3>Categories:</h3> 
                     <input type="checkbox" name="category" value="1"> <span class="pinkspan"> Annoucements</span> <br>
@@ -65,10 +65,10 @@ function changeContent(page) {
                     <input type="checkbox" name="category" value="3" > <span class="pinkspan">Questions</span> <br>
                     <br>
                     <label for="title">Title</label>
-                    <input type="text" name="title" id="title">
+                    <input type="text" name="title" id="title" required>
                     <br>
                     <label for="post">Post</label>
-                    <textarea name="post" id="post" class="postText"></textarea><br>
+                    <textarea name="post" id="post" class="postText" required></textarea><br>
                     <button type="submit">Add Post</button> 
                 </div>
             </form>`;

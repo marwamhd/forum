@@ -14,4 +14,10 @@ window.onload = function() {
         </label><hr>
         <button type="submit">Filter</button>
     </form>`
+    // Remove the '#' from the hash
+    const fragment = window.location.hash.substring(1); 
+
+    if (fragment.length != 0) {
+        window.location.href = '/'
+    }
 };
