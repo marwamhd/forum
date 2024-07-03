@@ -69,7 +69,6 @@ function viewPost(pid, array) {
     // Iterate through comments and add HTML for each comment
     a.Comments.forEach(function(comment) {
         GetIfUserLikedComment(a.ID, comment.ID)
-        console.log(comment)
         htmlContent += `
             <div class="comment">
                 <div class="user">Comment by ${comment.Username}</div>

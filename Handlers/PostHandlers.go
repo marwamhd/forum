@@ -1,7 +1,6 @@
 package Handlers
 
 import (
-	"fmt"
 	use "forum/Database"
 	"log"
 	"net/http"
@@ -18,7 +17,6 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	cook, cookieFound := r.Cookie("session_id")
 	if cookieFound != nil {
-		log.Println(cookieFound, "31")
 		OverWriteCookieValue(w, r, uuid.Nil)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
@@ -39,14 +37,13 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	author, err := use.GetAuthor(cook.Value)
 	if err != nil {
-		log.Println("error in getting author", err)
+		log.Println("Error in getting author", err)
 		return
 	}
 
 	title := r.FormValue("title")
 	content := r.FormValue("post")
 	category := r.Form["category"]
-	fmt.Printf("category: %v\n", len(category))
 
 	if len(category) == 0 {
 		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
@@ -74,8 +71,6 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 			cats = append(cats, 0)
 		}
 	}
-
-	fmt.Printf("cats: %v\n", cats)
 
 	if title == "" || content == "" {
 		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))

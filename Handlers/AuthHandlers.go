@@ -36,14 +36,14 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 
 	exists, err := use.DataBase.EmailExists(email)
 	if err != nil {
-		log.Println("error in executing email exists", err)
+		log.Println("Error in executing email exists", err)
 		return
 	}
 
 	uexists, err := use.DataBase.UsernameExists(username)
 
 	if err != nil {
-		log.Println("error in executing username exists", err)
+		log.Println("Error in executing username exists", err)
 		return
 	}
 
@@ -55,7 +55,7 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 
 	hashed, err := use.HashPassword(password)
 	if err != nil {
-		fmt.Printf("err: %v\n", err)
+		fmt.Printf("Error: %v\n", err)
 		return
 	}
 
@@ -81,16 +81,13 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	authlevel, sid, err := use.DataBase.Login(email, password, r)
+	_, sid, err := use.DataBase.Login(email, password, r)
 	if err != nil && (err.Error() == "invalid credentials" || err.Error() == "user already has an active session" || err.Error() == "sql: no rows in result set") {
 		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest)+" "+err.Error())
 		return
 	} else if err != nil {
 		ErrorHandler(w, r, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError)+" "+err.Error())
 		return
-	}
-	if authlevel == 1 {
-		fmt.Println("authorized")
 	}
 
 	OverWriteCookieValue(w, r, sid)

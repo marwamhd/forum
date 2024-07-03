@@ -64,6 +64,4 @@ function renderPostsByID(uid) {
     // Set the entire constructed HTML content to contentDiv.innerHTML
     contentDiv.innerHTML = htmlContent;
 
-    // Optionally, you can log the constructed HTML to verify
-    // console.log(htmlContent);
 }

@@ -19,20 +19,15 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	cook, cookieFound := r.Cookie("session_id")
 	if cookieFound != nil {
-		log.Println(cookieFound, "31")
 		OverWriteCookieValue(w, r, uuid.Nil)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
-	fmt.Println("278")
-
 	if cook.Value == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-
-	fmt.Println("284")
 
 	activeSession, errForSes := use.DataBase.SessionExists(cook.Value)
 
@@ -42,11 +37,9 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("293")
-
 	author, err := use.GetAuthor(cook.Value)
 	if err != nil {
-		log.Println("error in getting author", err)
+		log.Println("Error in getting author", err)
 		return
 	}
 
@@ -59,19 +52,13 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("309")
-
 	pid, err := strconv.Atoi(postID)
 	if err != nil {
 		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
 
-	fmt.Println("here")
-
 	use.DataBase.InsertComment(author, pid, content)
-
-	fmt.Println("Comment added.")
 
 	posts, err := use.DataBase.GetFilteredPosts("select * from posts")
 	if err != nil {
@@ -109,14 +96,10 @@ func AddLikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("12278")
-
 	if cook.Value == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-
-	fmt.Println("1212284")
 
 	activeSession, errForSes := use.DataBase.SessionExists(cook.Value)
 
@@ -126,25 +109,20 @@ func AddLikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("2121293")
-
 	author, err := use.GetAuthor(cook.Value)
 	if err != nil {
-		log.Println("error in getting author", err)
+		log.Println("Error in getting author", err)
 		return
 	}
 
 	postID := r.FormValue("pid")
 	commentID := r.FormValue("cid")
 	like := r.FormValue("like" + commentID)
-	fmt.Printf("author: %v\n", author)
 
 	if commentID == "" || like == "" || postID == "" {
 		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
-
-	fmt.Printf("like: %v\n", like)
 
 	pid, err := strconv.Atoi(postID)
 	if err != nil {
@@ -160,31 +138,22 @@ func AddLikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	likenum, err := strconv.Atoi(like)
 	if err != nil {
-		fmt.Printf("err: %v\n", err)
+		fmt.Printf("Error: %v\n", err)
 		return
 	}
-
-	fmt.Println("here")
-
-	fmt.Printf("cid: %v\n", cid)
 
 	err = use.DataBase.InsertCommentLike(author, pid, cid, likenum)
 	if err != nil {
-		fmt.Printf("err: %v\n", err)
+		fmt.Printf("Error: %v\n", err)
 		return
 	}
-
-	fmt.Println("comment like added.")
 
 	likes, dislikes, err := use.DataBase.CommentLikesDislikesTotal(postID, commentID)
 
 	if err != nil {
-		fmt.Printf("err: %v\n", err)
+		fmt.Printf("Error: %v\n", err)
 		return
 	}
-
-	fmt.Printf("likes: %v\n", likes)
-	fmt.Printf("dislikes: %v\n", dislikes)
 
 	// Create a JSON response struct
 	response := jsonResponse{
@@ -209,22 +178,15 @@ func DidUserLikeComment(w http.ResponseWriter, r *http.Request) {
 
 	cook, cookieFound := r.Cookie("session_id")
 	if cookieFound != nil {
-		log.Println(cookieFound, "3231")
 		OverWriteCookieValue(w, r, uuid.Nil)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
-	fmt.Println("sess")
-
-	fmt.Println("12278")
-
 	if cook.Value == "" {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-
-	fmt.Println("1212284")
 
 	activeSession, errForSes := use.DataBase.SessionExists(cook.Value)
 
@@ -234,41 +196,31 @@ func DidUserLikeComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("ass")
-
-	fmt.Println("2121293a")
-
 	author, err := use.GetAuthor(cook.Value)
 	if err != nil {
-		log.Println("error in getting author", err)
+		log.Println("Error in getting author", err)
 		return
 	}
 
 	var requestBody CommentRequestBody
 	err = json.NewDecoder(r.Body).Decode(&requestBody)
 	if err != nil {
-		fmt.Printf("err: %v\n", err)
+		fmt.Printf("Error: %v\n", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	postID := requestBody.Pid
 	commentID := requestBody.Cid
-	fmt.Printf("author: %v\n", author)
-
-	fmt.Printf("postID: %v\n", postID)
-	fmt.Printf("commentPD: %v\n", commentID)
 
 	if postID == 0 || commentID == 0 {
 		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
 
-	fmt.Printf("pid: %v\n", postID)
-
 	likedwhat, err := use.DataBase.WhatUserLikedComment(author, postID, commentID)
 	if err != nil {
-		fmt.Printf("err: %v\n", err)
+		fmt.Printf("Error: %v\n", err)
 		return
 	}
 

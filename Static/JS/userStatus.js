@@ -12,7 +12,6 @@ function GetIfUserLiked(pid) {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Server response:', data);
             // Handle the response accordingly
             if (data.success) {
                 console.log('User liked status retrieved successfully');
@@ -51,7 +50,6 @@ function GetIfUserLikedComment(pid, cid) {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Server response:', data);
             // Handle the response accordingly
             if (data.success) {
                 console.log('User liked status retrieved successfully');

@@ -15,7 +15,6 @@ function submitLike() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Server response:', data);
             // Handle the response accordingly
             if (data.success) {
                 console.log('Like/dislike submitted successfully');
@@ -46,7 +45,6 @@ function submitComment(postId) {
         })
         .then(response => response.text())
         .then(text => {
-            console.log('Server response:', text);
             try {
                 const data = JSON.parse(text);
                 if (data.success) {
@@ -86,7 +84,6 @@ function submitCommentLike(commentid) {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Server response:', data);
             // Handle the response accordingly
             if (data.success) {
                 console.log('Like/dislike submitted successfully');
@@ -110,11 +107,10 @@ function GetLikedPosts() {
         })
         .then(response => response.text())
         .then(text => {
-            console.log('Server response:', text);
             try {
                 const data = JSON.parse(text);
                 if (data.success) {
-                    console.log('Comment added:', data);
+                    console.log('Like Post obtained:', data);
                     // Reload the page to view the newly added comment
                     renderPosts(data.posts);
 
