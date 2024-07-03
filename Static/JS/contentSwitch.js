@@ -1,11 +1,13 @@
 function changeContent(page) {
     var contentDiv = document.getElementById('content');
     var footer = document.getElementById('cats')
+    var fbuttom = document.getElementById("fbtn")
 
     switch (page) {
         case 'home':
             renderPosts(initialPosts);
             contentDiv.innerHTML += `</div></div>`;
+            fbuttom.innerHTML = `<i id="footerbutton" class="fa fa-filter" style="font-size: 45px; color:rgb(233, 69, 154);" onclick="toggleFilter()"></i>`
             footer.innerHTML = `        
             <form action="/" method="get" id="CatForm">
                 <label>
@@ -38,6 +40,7 @@ function changeContent(page) {
                 </div>
             </form>`;
             footer.innerHTML = "";
+            fbuttom.innerHTML = "";
             SetPageRemember('home')
             break;
         case 'login':
@@ -55,6 +58,7 @@ function changeContent(page) {
                 </div>
             </form>`;
             footer.innerHTML = "";
+            fbuttom.innerHTML = "";
             SetPageRemember('home')
             break;
         case 'addpost':
@@ -75,6 +79,7 @@ function changeContent(page) {
                 </div>
             </form>`;
             footer.innerHTML = "";
+            fbuttom.innerHTML = "";
             SetPageRemember('home')
 
             break;
@@ -82,12 +87,14 @@ function changeContent(page) {
         case 'profile':
             renderPostsByID(useridentification)
             footer.innerHTML = "";
+            fbuttom.innerHTML = "";
             SetPageRemember('profile')
             break;
         case 'likedpost':
             GetLikedPosts();
             contentDiv.innerHTML += `</div></div>`;
             footer.innerHTML = "";
+            fbuttom.innerHTML = "";
             SetPageRemember('likedpost')
             break;
 

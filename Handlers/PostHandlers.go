@@ -53,8 +53,8 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	title = sanitizeInput(title)
-	content = sanitizeInput(content)
+	title = SanitizeInput(title)
+	content = SanitizeInput(content)
 	cats := []int{}
 
 	for i := 1; i <= 4; i++ {

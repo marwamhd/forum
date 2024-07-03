@@ -19,8 +19,8 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("us")
 	password := r.FormValue("ps")
 
-	semail := sanitizeInput(email)
-	susername := sanitizeInput(username)
+	semail := SanitizeInput(email)
+	susername := SanitizeInput(username)
 
 	if semail != email || susername != username {
 		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
@@ -46,8 +46,6 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("error in executing username exists", err)
 		return
 	}
-
-
 
 	if exists || uexists {
 		log.Println("Email or email already exists")

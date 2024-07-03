@@ -52,7 +52,7 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	postID := r.FormValue("pid")
 	content := r.FormValue("comment")
-	content = sanitizeInput(content)
+	content = SanitizeInput(content)
 
 	if postID == "" || content == "" {
 		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))

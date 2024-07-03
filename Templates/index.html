@@ -54,7 +54,9 @@
             <a href="#"  onclick="changeContent('home')">
                 <img class="star"  src="Static/Image/Star.jpg" alt="">
             </a>
-                <i class="fa fa-filter" style="font-size: 45px; color:rgb(233, 69, 154);" onclick="toggleFilter()"></i>
+                <div id="fbtn" class="fbtn">
+                    <i id="footerbutton" class="fa fa-filter" style="font-size: 45px; color:rgb(233, 69, 154);" onclick="toggleFilter()"></i>
+                </div>
                 <div id="cats"></div>
                 {{if eq .Authlevel 0}}
                 <a href="#" onclick="changeContent('login')">
@@ -90,6 +92,7 @@
         </main>
 
         <footer>
+            <h6 id="license">Copyright (c) 2024 YMASY</h6>
         </footer>
     </div>
     <script>
@@ -112,6 +115,6 @@
     <script src="Static/JS/renderPosts.js" defer></script>
     <script src="Static/JS/postUtils.js" defer></script>
     <script src="Static/JS/rememberPage.js"></script>
-    <h6 id="license">Copyright (c) 2024 YMASY</h6>
+    
 </body>
 </html>

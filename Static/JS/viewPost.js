@@ -114,6 +114,9 @@ function viewPost(pid, array) {
     var catsDiv = document.getElementById('cats');
     catsDiv.innerHTML = "";
 
+    var fbuttom = document.getElementById("fbtn")
+    fbuttom.innerHTML = ""
+
 
     // Log the post data for debugging purposes
 }
