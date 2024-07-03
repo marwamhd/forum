@@ -2,6 +2,8 @@ function viewPost(pid, array) {
     var contentDiv = document.getElementById('content');
     contentDiv.innerHTML = ''; // Clear existing content
 
+    SetPageRemember('viewPost ' + pid)
+
     GetIfUserLiked(pid)
 
     let a = getPostByIdAndArray(array, pid);
@@ -107,6 +109,11 @@ function viewPost(pid, array) {
 
     // Set the constructed HTML content to contentDiv.innerHTML
     contentDiv.innerHTML = htmlContent;
+
+
+    var catsDiv = document.getElementById('cats');
+    catsDiv.innerHTML = "";
+
 
     // Log the post data for debugging purposes
 }

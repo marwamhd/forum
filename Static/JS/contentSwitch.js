@@ -4,7 +4,6 @@ function changeContent(page) {
 
     switch (page) {
         case 'home':
-            location.reload();
             renderPosts(initialPosts);
             contentDiv.innerHTML += `</div></div>`;
             footer.innerHTML = `        
@@ -20,6 +19,7 @@ function changeContent(page) {
                 </label><hr>
                 <button type="submit">Filter</button>
             </form>`
+            SetPageRemember('home')
             break;
         case 'signup':
             contentDiv.innerHTML = `
@@ -38,6 +38,7 @@ function changeContent(page) {
                 </div>
             </form>`;
             footer.innerHTML = "";
+            SetPageRemember('home')
             break;
         case 'login':
             contentDiv.innerHTML = `
@@ -54,6 +55,7 @@ function changeContent(page) {
                 </div>
             </form>`;
             footer.innerHTML = "";
+            SetPageRemember('home')
             break;
         case 'addpost':
             contentDiv.innerHTML = `
@@ -73,16 +75,20 @@ function changeContent(page) {
                 </div>
             </form>`;
             footer.innerHTML = "";
+            SetPageRemember('home')
+
             break;
 
         case 'profile':
             renderPostsByID(useridentification)
             footer.innerHTML = "";
+            SetPageRemember('profile')
             break;
         case 'likedpost':
             GetLikedPosts();
             contentDiv.innerHTML += `</div></div>`;
             footer.innerHTML = "";
+            SetPageRemember('likedpost')
             break;
 
         default:

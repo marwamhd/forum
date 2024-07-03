@@ -373,3 +373,18 @@ button:hover {
 .show {
     display: block !important;
 }
+
+@media only screen and (max-width: 1000px) {
+    .post{
+        max-width: 400px;
+        min-width: 400px;
+    }
+}
+
+
+@media only screen and (max-width: 850px) {
+    .post{
+        max-width: 200px;
+        min-width: 200px;
+    }
+}

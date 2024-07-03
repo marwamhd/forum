@@ -1,23 +1,20 @@
 window.onload = function() {
-    renderPosts(initialPosts);
-    var footer = document.getElementById("cats")
-    footer.innerHTML = `        
-    <form action="/" method="get">
-        <label>
-            <input type="checkbox" name="cat" value="cat1"> Annoucements
-        </label><hr>
-        <label>
-            <input type="checkbox" name="cat" value="cat2"> Events
-        </label><hr>
-        <label>
-            <input type="checkbox" name="cat" value="cat3"> Questions
-        </label><hr>
-        <button type="submit">Filter</button>
-    </form>`
-    // Remove the '#' from the hash
+    let pageIn = localStorage.getItem("pageIn");
+    if (pageIn == null) {
+        pageIn = 'home'
+    }
+
+    if (pageIn.includes('viewPost')) {
+        viewPost(Number(pageIn.split(' ')[1]), initialPosts)
+    } else {
+        changeContent(pageIn)
+    }
+
     const fragment = window.location.hash.substring(1); 
 
     if (fragment.length != 0) {
         window.location.href = '/'
     }
+
+    // alert(pageIn)
 };
