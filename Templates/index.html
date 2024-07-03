@@ -100,10 +100,18 @@
             x.classList.toggle("change");
             var buttons = document.getElementById("additionalButtons");
             buttons.classList.toggle("show");
+            var cats = document.getElementById("cats");
+            if (cats.classList.contains("show")) {
+                cats.classList.remove("show");
+            }
         }
         function toggleFilter() {
             var cats = document.getElementById("cats");
             cats.classList.toggle("show");
+            var menu = document.getElementById("additionalButtons");
+            if (menu.classList.contains("show")) {
+                menu.classList.remove("show");
+            }
         }
     </script>      
     <script src="Static/JS/contentSwitch.js" defer></script>
