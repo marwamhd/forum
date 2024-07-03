@@ -119,10 +119,6 @@ func (DataBase *DB) EmailQuery() error {
 		if err != nil {
 			return err
 		}
-		fmt.Println(id)
-		fmt.Println(email)
-		fmt.Println(username)
-		fmt.Println(password)
 	}
 
 	rows.Close()

@@ -87,12 +87,6 @@ func (DataBase *DB) Login(InputEmail, inputPassword string, r *http.Request) (in
 
 	cook, valid := r.Cookie("session_id")
 
-	fmt.Println("hvnhhnfnf" + cook.Value)
-	fmt.Println("cookie is ", cook.Value)
-	fmt.Println("sessihtdhtdhon", sessionID.String)
-
-	fmt.Println(sessionID.Valid)
-	fmt.Println(sessionID.String)
 
 	// Check if the user already has an active session
 	if valid != nil || cook.Value != "" {
