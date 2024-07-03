@@ -331,3 +331,45 @@ button:hover {
     margin-bottom: 1rem;
     font-size: 1rem;
 }
+
+.MenuB {
+    display: inline-block;
+    cursor: pointer;
+    position: absolute;
+    top: 15px; 
+    right: 20px;
+}
+
+.bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color:rgb(233, 69, 154);
+    ;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+.change .bar1 {
+    transform: translate(0, 11px) rotate(-45deg);
+}
+
+.change .bar2 {
+    opacity: 0;
+}
+
+.change .bar3 {
+    transform: translate(0, -11px) rotate(45deg);
+}
+
+.additional-buttons {
+    display: none;
+    position: absolute;
+    right: 0;
+    padding: 25px;
+    margin-right: 20px;
+    margin-top: 30px;
+}
+
+.show {
+    display: block !important;
+}

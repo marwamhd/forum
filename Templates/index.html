@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/normalize.css">
     <link rel="stylesheet" href="Static/CSS/Main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script>
         // Initialize initialPosts as an empty array
         let initialPosts = [];
@@ -53,27 +54,38 @@
             <a href="#"  onclick="changeContent('home')">
                 <img class="star"  src="Static/Image/Star.jpg" alt="">
             </a>
-            {{if eq .Authlevel 0}}
-            <a href="#" onclick="changeContent('login')">
-                <div class="navButton">Login</div>
-            </a>
-            {{else}}
-            <div class="headerLeft">
-                <a href="#" onclick="changeContent('profile')">
-                    <div class="navButton">Profile</div>
+            
+            
+           
+                {{if eq .Authlevel 0}}
+                <a href="#" onclick="changeContent('login')">
+                    <div class="navButton">Login</div>
                 </a>
-                <a href="#" onclick="changeContent('addpost')">
-                    <div class="navButton">Create Post</div>
-                </a>          
-                <a href="#" onclick="changeContent('likedpost')">
-                    <div class="navButton">Liked post</div>
-                </a>
-                <a href="/logout">
-                    <div class="navButton">Logout</div>
-                </a>
-            </div>
-            {{end}}
-        </header>        
+                {{else}}
+                <div class="MenuB" onclick="toggleButtons(this)">
+                    <div class="bar1"></div>
+                    <div class="bar2"></div>
+                    <div class="bar3"></div>
+                </div>
+                <div class="additional-buttons" id="additionalButtons">
+                    <!-- Your additional buttons here -->
+                    <a href="#" onclick="changeContent('profile')">
+                        <div class="navButton">Profile</div>
+                    </a>
+                    <a href="#" onclick="changeContent('addpost')">
+                        <div class="navButton">Create Post</div>
+                    </a>          
+                    <a href="#" onclick="changeContent('likedpost')">
+                        <div class="navButton">Liked post</div>
+                    </a>
+                    <a href="/logout">
+                        <div class="navButton">Logout</div>
+                    </a>
+                </div>
+                
+                {{end}}
+            
+        </header>                  
         <main id="content">
 
         </main>
@@ -81,6 +93,17 @@
         <footer id="cats">
         </footer>
     </div>
+    <script>
+        function toggleButtons(x) {
+            x.classList.toggle("change");
+            var buttons = document.getElementById("additionalButtons");
+            buttons.classList.toggle("show");
+        }
+        function toggleFilter() {
+            var buttons = document.getElementById("cats");
+            buttons.classList.toggle("show");
+        }
+    </script>      
     <script src="Static/JS/contentSwitch.js" defer></script>
     <script src="Static/JS/init.js" defer></script>
     <script src="Static/JS/viewPost.js" defer></script>

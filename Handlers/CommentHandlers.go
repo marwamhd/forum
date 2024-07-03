@@ -4,12 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	use "forum/Database"
-	"html"
 	"log"
 	"net/http"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/gofrs/uuid"
 )
@@ -55,6 +52,7 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	postID := r.FormValue("pid")
 	content := r.FormValue("comment")
+	content = sanitizeInput(content)
 
 	if postID == "" || content == "" {
 		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
@@ -70,8 +68,6 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println("here")
-
-	content = sanitizeInput(content)
 
 	use.DataBase.InsertComment(author, pid, content)
 
@@ -287,21 +283,4 @@ func DidUserLikeComment(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to encode JSON", http.StatusInternalServerError)
 		return
 	}
-}
-
-// Remove HTML tags, Convert \n to <br> tags, Replace special HTML characters with their escaped equivalents
-func sanitizeInput(input string) string {
-
-	input = removeHTMLTags(input)
-	input = html.EscapeString(input)
-	input = strings.ReplaceAll(input, "\r\n", "<br>")
-	input = strings.TrimSpace(input)
-	return input
-}
-
-func removeHTMLTags(input string) string {
-	htmlTagRegex := regexp.MustCompile(`<[^>]*>`)
-	sanitized := htmlTagRegex.ReplaceAllString(input, "")
-
-	return sanitized
 }
