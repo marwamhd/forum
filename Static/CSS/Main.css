@@ -1,10 +1,11 @@
 html {
-    background-image: url("https://localhost:5050/Static/Image/background.jpg");
+    background-image: url("https://localhost:5050/Static/Image/Star.jpg");
+    background-size: 20px;
 }
 
 body {
     /* background-color: #faeeef; */
-    background-color: #faeeefa2;
+    background-color: #faeeefc7;
     color: rgb(0, 0, 0);
     font-family: monospace;
 }

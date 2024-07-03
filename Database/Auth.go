@@ -26,6 +26,24 @@ func (DataBase *DB) EmailExists(InputEmail string) (bool, error) {
 	return true, nil
 }
 
+func (DataBase *DB) UsernameExists(InputEmail string) (bool, error) {
+	statement, err := DataBase.DB.Prepare("SELECT id FROM users WHERE username = ?")
+	if err != nil {
+		return false, err
+	}
+	defer statement.Close()
+
+	var id int
+	err = statement.QueryRow(InputEmail).Scan(&id)
+	if err == sql.ErrNoRows {
+		return false, nil
+	} else if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
 func (DataBase *DB) SessionExists(session string) (bool, error) {
 	statement, err := DataBase.DB.Prepare("SELECT id FROM users WHERE session_id = ?")
 	if err != nil {

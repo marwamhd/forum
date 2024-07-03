@@ -40,8 +40,17 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if exists {
-		log.Println("Email already exists")
+	uexists, err := use.DataBase.UsernameExists(username)
+
+	if err != nil {
+		log.Println("error in executing username exists", err)
+		return
+	}
+
+
+
+	if exists || uexists {
+		log.Println("Email or email already exists")
 		ErrorHandler(w, r, http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
 		return
 	}
