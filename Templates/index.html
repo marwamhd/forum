@@ -60,7 +60,7 @@
                 <div id="cats"></div>
                 {{if eq .Authlevel 0}}
                 <a href="#" onclick="changeContent('login')">
-                    <div class="navButton">Login</div>
+                    <div class="navButton" style="margin-right: 35px;">Login</div>
                 </a>
                 {{else}}
                 <div class="MenuB" onclick="toggleButtons(this)">
@@ -106,11 +106,13 @@
             }
         }
         function toggleFilter() {
+            var xx = document.querySelector(".MenuB")
             var cats = document.getElementById("cats");
             cats.classList.toggle("show");
             var menu = document.getElementById("additionalButtons");
             if (menu.classList.contains("show")) {
                 menu.classList.remove("show");
+                xx.classList.toggle("change");
             }
         }
     </script>      
