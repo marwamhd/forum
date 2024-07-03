@@ -7,7 +7,7 @@ function changeContent(page) {
             renderPosts(initialPosts);
             contentDiv.innerHTML += `</div></div>`;
             footer.innerHTML = `        
-            <form action="/" method="get">
+            <form action="/" method="get" id="CatForm">
                 <label>
                     <input type="checkbox" name="cat" value="cat1"> Annoucements
                 </label><hr>
