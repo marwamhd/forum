@@ -344,7 +344,6 @@ button:hover {
     width: 35px;
     height: 5px;
     background-color:rgb(233, 69, 154);
-    ;
     margin: 6px 0;
     transition: 0.4s;
 }
@@ -369,10 +368,32 @@ button:hover {
     margin-right: 20px;
     margin-top: 30px;
 }
+.fa-filter {
+    display: inline-block;
+    cursor: pointer;
+    position: absolute;
+    top: 12px; 
+    right: 80px;
+}
+
+
+#CatForm {
+    position: absolute;
+    right: 0;
+    padding: 50px;
+    margin-right: 20px;
+    margin-top: 30px;
+}
 
 .show {
     display: block !important;
 }
+
+
+#cats {
+    display: none; /* Initially hide cats */
+}
+
 
 @media only screen and (max-width: 1000px) {
     .post{
